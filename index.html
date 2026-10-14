@@ -30,8 +30,9 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <div class="header">
 <h2>⛽ PETRO-CALCULATOR.NG</h2>
 <div style="color:#94a3b8;font-size:12px">12-in-1 With Full Working Steps</div>
-<div class="badge" id="statusBadge" style="display:none;">🔒 LOCKED - PAY TO ACCESS</div>
+<div class="badge" id="statusBadge">🔒 LOCKED - PAY TO ACCESS</div>
 <button class="admin-dot" onclick="openMaster()" style="display:none;">ADMIN</button>
+<div id="myCodeDisplay" style="display:none;"></div>
 </div>
 <div class="container">
 <div id="masterPanel" class="admin-box">
@@ -46,6 +47,7 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <label>Change Master Password</label><input id="newMasterPw" type="text" placeholder="New secret">
 <button class="btn" style="background:#f59e0b" onclick="changeMasterPw()">Change Password</button>
 <button class="btn btn-black" onclick="resetCustomerAccess()">Reset - Lock Customers</button>
+<div id="codeSection" style="display:none"><div class="code-big" id="generatedCode"></div><input id="customerEmail" type="hidden"></div>
 </div>
 <div id="pageLock" class="page active">
 <div class="hero-reseller">
@@ -63,13 +65,12 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <div class="lock-screen">
 <h3>🔑 HAVE ACCESS CODE?</h3>
 <p style="font-size:11px;margin:6px 0">Enter code from your email</p>
-<input id="codeInput" placeholder="e.g. PC-123456">
+<input id="codeInput" placeholder="e.g. PC-123456 or GODSTIME1997">
 <button class="btn" onclick="unlockWithCode()">UNLOCK WITH CODE</button>
 <p id="codeMsg" style="font-size:11px;margin-top:8px;color:#f87171"></p>
 </div>
 </div>
 <div id="pageCalc" class="page">
-
 <div class="card"><h3>1. Porosity (%) = Pore/Bulk*100</h3><label>Pore Volume</label><input id="c1_pv" type="number" value="25"><label>Bulk Volume</label><input id="c1_bv" type="number" value="100"><button class="btn" onclick="calc1()">Calculate Porosity</button><div class="result" id="r1"></div></div>
 <div class="card"><h3>2. Hydrostatic Pressure (psi) = 0.052*MW*Depth</h3><label>Mud Weight ppg</label><input id="c2_mw" type="number" value="12"><label>Depth ft</label><input id="c2_d" type="number" value="5000"><button class="btn" onclick="calc2()">Calculate Pressure</button><div class="result" id="r2"></div></div>
 <div class="card"><h3>3. Oil Formation Volume Factor Bo</h3><label>Specific Gravity SG</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
@@ -86,50 +87,167 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 </div>
 </div>
 <script>
-function unlockWithCode(){let raw=document.getElementById('codeInput').value.trim().toUpperCase();if(!raw)return alert('Enter code');let m=(localStorage.getItem('masterPw')||'GODSTIME1997').toUpperCase();if(raw==='GODSTIME1997'||raw==='GODSTIME@1997'||raw===m||raw.startsWith('PC-')){sessionStorage.setItem('sessionUnlock','1');localStorage.setItem('isPaid','true');showPage('pageCalc');location.reload();}else{document.getElementById('codeMsg').innerText='Invalid code';}}
-let MASTER_PW=localStorage.getItem('masterPw')||'GODSTIME1997';
-let paystackKey=localStorage.getItem('paystackKey')||'pk_live_522e90';
-let price=parseInt(localStorage.getItem('userPrice')||'2500');
-let resellerPrice=parseInt(localStorage.getItem('resellerPrice')||'2000');
-document.getElementById('adminPaystackKey').value=paystackKey;
-document.getElementById('adminPrice').value=price;
-document.getElementById('adminResellerPrice').value=resellerPrice;
-document.getElementById('priceDisplay').innerText=price.toLocaleString();
-document.getElementById('resellerPriceDisplay').innerText=resellerPrice.toLocaleString();
-function openMaster(){let pw=prompt('Master password:');if(pw&& (pw.toUpperCase()==='GODSTIME1997'||pw.toUpperCase()==='GODSTIME@1997'||pw.toUpperCase()===MASTER_PW.toUpperCase())){document.getElementById('masterPanel').style.display='block';}else if(pw){alert('Wrong master');}}
-function closeMaster(){document.getElementById('masterPanel').style.display='none';}
-function adminUnlockFree(){sessionStorage.setItem('sessionUnlock','1');showPage('pageCalc');}
-function openMaster(){let pw=prompt('Master password:');if(pw===MASTER_PW){document.getElementById('masterPanel').style.display='block';}else if(pw){alert('Wrong!');}}
-function closeMaster(){document.getElementById('masterPanel').style.display='none';updateBadge();}
-function adminUnlockFree(){sessionStorage.setItem('sessionUnlock','admin');localStorage.setItem('lastCode','ADMIN-FREE');document.getElementById('myCodeDisplay').innerText='ADMIN-FREE';showPage('pageCalc');updateBadge();}
-function saveAdmin(){paystackKey=document.getElementById('adminPaystackKey').value.trim();price=parseInt(document.getElementById('adminPrice').value)||2500;resellerPrice=parseInt(document.getElementById('adminResellerPrice').value)||25000;localStorage.setItem('paystackKey',paystackKey);localStorage.setItem('userPrice',price);localStorage.setItem('resellerPrice',resellerPrice);document.getElementById('priceDisplay').innerText=price.toLocaleString();document.getElementById('resellerPriceDisplay').innerText=resellerPrice.toLocaleString();alert('Saved!');}
-function changeMasterPw(){let np=document.getElementById('newMasterPw').value.trim();if(np.length<4){alert('Too short');return;}MASTER_PW=np;localStorage.setItem('masterPw',np);alert('Changed! Only you know!');document.getElementById('newMasterPw').value='';}
-function resetCustomerAccess(){sessionStorage.removeItem('sessionUnlock');localStorage.removeItem('lastCode');showPage('pageLock');updateBadge();}
-function updateBadge(){let sess=sessionStorage.getItem('sessionUnlock');if(sess){document.getElementById('statusBadge').innerText='✅ UNLOCKED';document.getElementById('statusBadge').className='badge unlocked';}else{document.getElementById('statusBadge').innerText='🔒 LOCKED - PAY TO ACCESS';document.getElementById('statusBadge').className='badge';}}
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function generateCode(ref){return 'PC-'+ref.slice(-6).toUpperCase();}
-function copyCode(){let c=document.getElementById('myCodeDisplay').innerText;navigator.clipboard.writeText(c);alert('Copied: '+c);}
-function sendCodeEmail(){let code=document.getElementById('myCodeDisplay').innerText;let email=localStorage.getItem('lastEmail')||prompt('Enter email:');if(!email)return;localStorage.setItem('lastEmail',email);let s=encodeURIComponent('Your PETRO-CALCULATOR Code: '+code);let b=encodeURIComponent('Your code: '+code+'\nUse at: https://godstime1997.github.io/Petro-calculator/\nEnter in HAVE ACCESS CODE?\n\nSave this email!');window.location.href='mailto:'+email+'?subject='+s+'&body='+b;}
-function payToUnlock(){let customerEmail=prompt('Enter your REAL email to receive code:','');if(!customerEmail||!customerEmail.includes('@')){alert('Valid email needed');return;}localStorage.setItem('lastEmail',customerEmail);let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:customerEmail,amount:price*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){let code=generateCode(res.reference);let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');codes.push(code);localStorage.setItem('validCodes',JSON.stringify(codes));sessionStorage.setItem('sessionUnlock',code);localStorage.setItem('lastCode',code);document.getElementById('myCodeDisplay').innerText=code;alert('✅ SUCCESS! Code: '+code);let s=encodeURIComponent('Your PETRO-CALCULATOR Code: '+code);let b=encodeURIComponent('Thanks for N'+price+' payment!\nCode: '+code+'\nRef: '+res.reference+'\nUse at: https://godstime1997.github.io/Petro-calculator/');setTimeout(()=>{window.location.href='mailto:'+customerEmail+'?subject='+s+'&body='+b;},600);showPage('pageCalc');updateBadge();},onClose:function(){alert('Cancelled');}});h.openIframe();}
-function payForReseller(){let email=prompt('Enter email for reseller file:','');if(!email||!email.includes('@')){alert('Valid email');return;}let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:email,amount:resellerPrice*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){alert('Reseller success! Ref:'+res.reference);let blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='petro-calculator-code.html';a.click();},onClose:function(){}});h.openIframe();}
-function unlockWithCode(){let raw=document.getElementById('codeInput').value.trim().toUpperCase();if(!raw)return alert('Enter code');let ok=(raw===MASTER_PW)||raw.startsWith('PC-');if(ok){sessionStorage.setItem('sessionActive','1');sessionStorage.setItem('lastCode',raw);showPage('pageCalc');location.reload();}else{alert('Invalid code');}}
-function lockAndExit(){sessionStorage.removeItem('sessionUnlock');showPage('pageLock');updateBadge();}
+let MASTER_PW = localStorage.getItem('masterPw') || 'GODSTIME1997';
+let paystackKey = localStorage.getItem('paystackKey') || 'pk_live_522e90bc4d7ec45abe67ed9b807d7512a0d8ce5b';
+let price = parseInt(localStorage.getItem('userPrice') || '2500');
+let resellerPrice = parseInt(localStorage.getItem('resellerPrice') || '25000');
+let el = (id) => document.getElementById(id);
+el('adminPaystackKey').value = paystackKey;
+el('adminPrice').value = price;
+el('adminResellerPrice').value = resellerPrice;
+el('priceDisplay').innerText = price.toLocaleString();
+el('resellerPriceDisplay').innerText = resellerPrice.toLocaleString();
+function openMaster(){
+ let pw = prompt('Master password:');
+ if(!pw) return;
+ let up = pw.toUpperCase();
+ if(up==='GODSTIME1997' || up==='GODSTIME@1997' || up===MASTER_PW.toUpperCase()){
+  el('masterPanel').style.display='block';
+ } else alert('Wrong master');
+}
+function closeMaster(){ el('masterPanel').style.display='none'; }
+function adminUnlockFree(){
+ sessionStorage.setItem('sessionUnlock','1');
+ localStorage.setItem('isPaid','true');
+ localStorage.setItem('lastCode','ADMIN-FREE');
+ el('myCodeDisplay').innerText='ADMIN-FREE';
+ showPage('pageCalc');
+}
+function saveAdmin(){
+ paystackKey = el('adminPaystackKey').value.trim();
+ price = parseInt(el('adminPrice').value)||2500;
+ resellerPrice = parseInt(el('adminResellerPrice').value)||25000;
+ localStorage.setItem('paystackKey',paystackKey);
+ localStorage.setItem('userPrice',price);
+ localStorage.setItem('resellerPrice',resellerPrice);
+ el('priceDisplay').innerText=price.toLocaleString();
+ el('resellerPriceDisplay').innerText=resellerPrice.toLocaleString();
+ alert('Saved!');
+}
+function changeMasterPw(){
+ let np = el('newMasterPw').value.trim();
+ if(np.length<4){ alert('Too short'); return; }
+ MASTER_PW=np;
+ localStorage.setItem('masterPw',np);
+ alert('Changed to: '+np);
+ el('newMasterPw').value='';
+}
+function resetCustomerAccess(){
+ sessionStorage.removeItem('sessionUnlock');
+ localStorage.removeItem('lastCode');
+ showPage('pageLock');
+ updateBadge();
+}
+function updateBadge(){
+ let sess = sessionStorage.getItem('sessionUnlock');
+ if(sess){
+  el('statusBadge').innerText='✅ UNLOCKED - '+sess;
+  el('statusBadge').className='badge unlocked';
+ } else {
+  el('statusBadge').innerText='🔒 LOCKED - PAY TO ACCESS';
+  el('statusBadge').className='badge';
+ }
+}
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ el(id).classList.add('active');
+ window.scrollTo(0,0);
+ updateBadge();
+}
+function generateCode(ref){ return 'PC-'+ref.slice(-6).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase(); }
+function payToUnlock(){
+ let customerEmail=prompt('Enter your REAL email to receive code:','');
+ if(!customerEmail||!customerEmail.includes('@')){ alert('Valid email needed'); return; }
+ localStorage.setItem('lastEmail',customerEmail);
+ let key=localStorage.getItem('paystackKey')||paystackKey;
+ let h=PaystackPop.setup({
+  key:key,
+  email:customerEmail,
+  amount:price*100,
+  currency:'NGN',
+  ref:''+Math.floor(Math.random()*1000000000+1),
+  callback:function(res){
+   let code=generateCode(res.reference);
+   el('generatedCode').innerText=code;
+   el('codeSection').style.display='block';
+   el('customerEmail').value=customerEmail;
+   let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');
+   codes.push(code);
+   localStorage.setItem('validCodes',JSON.stringify(codes));
+   sessionStorage.setItem('sessionUnlock',code);
+   localStorage.setItem('lastCode',code);
+   el('myCodeDisplay').innerText=code;
+   alert('✅ SUCCESS! Code: '+code);
+   showPage('pageCalc');
+  },
+  onClose:function(){ alert('Payment cancelled'); }
+ });
+ h.openIframe();
+}
+function payForReseller(){
+ let email=prompt('Enter email for reseller file:','');
+ if(!email||!email.includes('@')){ alert('Valid email'); return; }
+ let key=localStorage.getItem('paystackKey')||paystackKey;
+ let h=PaystackPop.setup({
+  key:key,
+  email:email,
+  amount:resellerPrice*100,
+  currency:'NGN',
+  ref:''+Math.floor(Math.random()*1000000000+1),
+  callback:function(res){
+   alert('Reseller success! Ref:'+res.reference);
+   let blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+   let url=URL.createObjectURL(blob);
+   let a=document.createElement('a');
+   a.href=url;
+   a.download='petro-calculator-code.html';
+   a.click();
+  },
+  onClose:function(){}
+ });
+ h.openIframe();
+}
+function unlockWithCode(){
+ let raw = el('codeInput').value.trim().toUpperCase();
+ if(!raw){ alert('Enter code'); return; }
+ let m = (localStorage.getItem('masterPw')||'GODSTIME1997').toUpperCase();
+ if(raw==='GODSTIME1997' || raw==='GODSTIME@1997' || raw===m || raw.startsWith('PC-')){
+  sessionStorage.setItem('sessionUnlock',raw);
+  localStorage.setItem('isPaid','true');
+  localStorage.setItem('lastCode',raw);
+  el('myCodeDisplay').innerText=raw;
+  el('codeMsg').innerText='';
+  showPage('pageCalc');
+ } else {
+  el('codeMsg').innerText='Invalid code: '+raw;
+ }
+}
+function lockAndExit(){
+ sessionStorage.removeItem('sessionUnlock');
+ showPage('pageLock');
+}
+function calc1(){let pv=parseFloat(el('c1_pv').value);let bv=parseFloat(el('c1_bv').value);let ans=bv?pv/bv*100:0;el('r1').innerText="FORMULA: Porosity = (Pore/Bulk)x100\nGIVEN:\nPore="+pv+"\nBulk="+bv+"\nSOLUTION:\n= ("+pv+"/"+bv+")x100\n= "+(pv/bv).toFixed(4)+"x100\nANSWER: Porosity = "+ans.toFixed(2)+" %";}
+function calc2(){let mw=parseFloat(el('c2_mw').value);let d=parseFloat(el('c2_d').value);let ans=0.052*mw*d;el('r2').innerText="FORMULA: P = 0.052 x MW x Depth\nGIVEN:\nMW="+mw+" ppg\nDepth="+d+" ft\nSOLUTION:\n= 0.052 x "+mw+" x "+d+"\n= "+(0.052*mw).toFixed(4)+" x "+d+"\nANSWER: Pressure = "+ans.toFixed(2)+" psi";}
+function calc3(){let sg=parseFloat(el('c3').value);let api=141.5/sg-131.5;let bo=0.972+0.000147*api;el('r3').innerText="FORMULA: API=141.5/SG-131.5\nBo=0.972+0.000147xAPI\nGIVEN:\nSG="+sg+"\nSOLUTION:\nAPI=141.5/"+sg+"-131.5="+api.toFixed(2)+"\nBo=0.972+0.000147x"+api.toFixed(2)+"\nANSWER: Bo="+bo.toFixed(4)+" RB/STB";}
+function calc4(){let z=parseFloat(el('c4_z').value);let t=parseFloat(el('c4_t').value);let p=parseFloat(el('c4_p').value);let ans=0.02827*z*t/p;el('r4').innerText="FORMULA: Bg=0.02827xZxT/P\nGIVEN:\nZ="+z+"\nT="+t+" R\nP="+p+" psi\nSOLUTION:\n=0.02827x"+z+"x"+t+"/"+p+"\n= "+(0.02827*z*t).toFixed(2)+"/"+p+"\nANSWER: Bg="+ans.toFixed(5)+" cuft/scf";}
+function calc5(){let k=parseFloat(el('c5_k').value);let a=parseFloat(el('c5_a').value);let dp=parseFloat(el('c5_dp').value);let mu=parseFloat(el('c5_mu').value);let l=parseFloat(el('c5_l').value);let ans=0.001127*k*a*dp/(mu*l);el('r5').innerText="FORMULA: Q=0.001127xKxAxdP/(muxL)\nGIVEN:\nK="+k+" md A="+a+"\ndP="+dp+" mu="+mu+" L="+l+"\nSOLUTION:\n=0.001127x"+k+"x"+a+"x"+dp+"/("+mu+"x"+l+")\nANSWER: Q="+ans.toFixed(2)+" bbl/day";}
+function calc6(){let a=parseFloat(el('c6_a').value);let h=parseFloat(el('c6_h').value);let phi=parseFloat(el('c6_phi').value);let sw=parseFloat(el('c6_sw').value);let bo=parseFloat(el('c6_bo').value);let ans=7758*a*h*phi*(1-sw)/bo;el('r6').innerText="FORMULA: OOIP=7758xAxHxPhix(1-Sw)/Bo\nGIVEN:\nA="+a+" H="+h+" Phi="+phi+" Sw="+sw+" Bo="+bo+"\nSOLUTION:\n=7758x"+a+"x"+h+"x"+phi+"x"+(1-sw).toFixed(2)+"/"+bo+"\nANSWER: OOIP="+ans.toFixed(0)+" STB";}
+function calc7(){let oo=parseFloat(el('c7_ooip').value);let re=parseFloat(el('c7_rec').value);let ans=oo?re/oo*100:0;el('r7').innerText="FORMULA: RF=(Recoverable/OOIP)x100\nGIVEN:\nRecoverable="+re+"\nOOIP="+oo+"\nSOLUTION:\n=("+re+"/"+oo+")x100\n= "+(re/oo).toFixed(4)+"x100\nANSWER: RF="+ans.toFixed(2)+" %";}
+function calc8(){let w=parseFloat(el('c8_wv').value);let p=parseFloat(el('c8_pv').value);let ans=p?w/p*100:0;el('r8').innerText="FORMULA: Sw=(Water/Pore)x100\nGIVEN:\nWater="+w+"\nPore="+p+"\nSOLUTION:\n=("+w+"/"+p+")x100\n= "+(w/p).toFixed(4)+"x100\nANSWER: Sw="+ans.toFixed(2)+" %";}
+function calc9(){let a=parseFloat(el('c9_a').value);let h=parseFloat(el('c9_h').value);let ans=a*h;el('r9').innerText="FORMULA: Bulk=Area x Height\nGIVEN:\nArea="+a+"\nHeight="+h+"\nSOLUTION:\n="+a+"x"+h+"\n="+a*h+"\nANSWER: Bulk="+ans.toFixed(2);}
+function calc10(){let p=parseFloat(el('c10_pv').value);let s=parseFloat(el('c10_sw').value);let ans=p*(1-s);el('r10').innerText="FORMULA: HCPV=PVx(1-Sw)\nGIVEN:\nPV="+p+" Sw="+s+"\nSOLUTION:\n="+p+"x(1-"+s+")\nANSWER: HCPV="+ans.toFixed(2);}
+function calc11(){let sg=parseFloat(el('c11').value);let ans=141.5/sg-131.5;el('r11').innerText="FORMULA: API=141.5/SG-131.5\nGIVEN:\nSG="+sg+"\nSOLUTION:\n=141.5/"+sg+"-131.5\nANSWER: API="+ans.toFixed(2);}
+function calc12(){let g=parseFloat(el('c12_g').value);let o=parseFloat(el('c12_o').value);let ans=o?g/o:0;el('r12').innerText="FORMULA: GOR=Gas/Oil\nGIVEN:\nGas="+g+"\nOil="+o+"\nSOLUTION:\n="+g+"/"+o+"\nANSWER: GOR="+ans.toFixed(2)+" scf/stb";}
+let sess = sessionStorage.getItem('sessionUnlock') || sessionStorage.getItem('sessionActive');
+if(sess){
+ sessionStorage.setItem('sessionUnlock',sess);
+ showPage('pageCalc');
+ let last=localStorage.getItem('lastCode');
+ el('myCodeDisplay').innerText=last||sess;
+} else {
+ showPage('pageLock');
+}
 updateBadge();
-let sess=sessionStorage.getItem('sessionUnlock');
-if(sess){showPage('pageCalc');let last=localStorage.getItem('lastCode');document.getElementById('myCodeDisplay').innerText=(last&&last.includes('ADMIN'))?'ADMIN-FREE':(last||sess);}else{showPage('pageLock');}
-
-function calc1(){let pv=parseFloat(document.getElementById('c1_pv').value);let bv=parseFloat(document.getElementById('c1_bv').value);let ans=bv?pv/bv*100:0;document.getElementById('r1').innerText="FORMULA: Porosity = (Pore/Bulk)x100\nGIVEN:\nPore="+pv+"\nBulk="+bv+"\nSOLUTION:\n= ("+pv+"/"+bv+")x100\n= "+(pv/bv).toFixed(4)+"x100\nANSWER: Porosity = "+ans.toFixed(2)+" %";}
-function calc2(){let mw=parseFloat(document.getElementById('c2_mw').value);let d=parseFloat(document.getElementById('c2_d').value);let ans=0.052*mw*d;document.getElementById('r2').innerText="FORMULA: P = 0.052 x MW x Depth\nGIVEN:\nMW="+mw+" ppg\nDepth="+d+" ft\nSOLUTION:\n= 0.052 x "+mw+" x "+d+"\n= "+(0.052*mw).toFixed(4)+" x "+d+"\nANSWER: Pressure = "+ans.toFixed(2)+" psi";}
-function calc3(){let sg=parseFloat(document.getElementById('c3').value);let api=141.5/sg-131.5;let bo=0.972+0.000147*api;document.getElementById('r3').innerText="FORMULA: API=141.5/SG-131.5\nBo=0.972+0.000147xAPI\nGIVEN:\nSG="+sg+"\nSOLUTION:\nAPI=141.5/"+sg+"-131.5="+api.toFixed(2)+"\nBo=0.972+0.000147x"+api.toFixed(2)+"\nANSWER: Bo="+bo.toFixed(4)+" RB/STB";}
-function calc4(){let z=parseFloat(document.getElementById('c4_z').value);let t=parseFloat(document.getElementById('c4_t').value);let p=parseFloat(document.getElementById('c4_p').value);let ans=0.02827*z*t/p;document.getElementById('r4').innerText="FORMULA: Bg=0.02827xZxT/P\nGIVEN:\nZ="+z+"\nT="+t+" R\nP="+p+" psi\nSOLUTION:\n=0.02827x"+z+"x"+t+"/"+p+"\n= "+(0.02827*z*t).toFixed(2)+"/"+p+"\nANSWER: Bg="+ans.toFixed(5)+" cuft/scf";}
-function calc5(){let k=parseFloat(document.getElementById('c5_k').value);let a=parseFloat(document.getElementById('c5_a').value);let dp=parseFloat(document.getElementById('c5_dp').value);let mu=parseFloat(document.getElementById('c5_mu').value);let l=parseFloat(document.getElementById('c5_l').value);let ans=0.001127*k*a*dp/(mu*l);document.getElementById('r5').innerText="FORMULA: Q=0.001127xKxAxdP/(muxL)\nGIVEN:\nK="+k+" md A="+a+"\ndP="+dp+" mu="+mu+" L="+l+"\nSOLUTION:\n=0.001127x"+k+"x"+a+"x"+dp+"/("+mu+"x"+l+")\nANSWER: Q="+ans.toFixed(2)+" bbl/day";}
-function calc6(){let a=parseFloat(document.getElementById('c6_a').value);let h=parseFloat(document.getElementById('c6_h').value);let phi=parseFloat(document.getElementById('c6_phi').value);let sw=parseFloat(document.getElementById('c6_sw').value);let bo=parseFloat(document.getElementById('c6_bo').value);let ans=7758*a*h*phi*(1-sw)/bo;document.getElementById('r6').innerText="FORMULA: OOIP=7758xAxHxPhix(1-Sw)/Bo\nGIVEN:\nA="+a+" H="+h+" Phi="+phi+" Sw="+sw+" Bo="+bo+"\nSOLUTION:\n=7758x"+a+"x"+h+"x"+phi+"x"+(1-sw).toFixed(2)+"/"+bo+"\nANSWER: OOIP="+ans.toFixed(0)+" STB";}
-function calc7(){let oo=parseFloat(document.getElementById('c7_ooip').value);let re=parseFloat(document.getElementById('c7_rec').value);let ans=oo?re/oo*100:0;document.getElementById('r7').innerText="FORMULA: RF=(Recoverable/OOIP)x100\nGIVEN:\nRecoverable="+re+"\nOOIP="+oo+"\nSOLUTION:\n=("+re+"/"+oo+")x100\n= "+(re/oo).toFixed(4)+"x100\nANSWER: RF="+ans.toFixed(2)+" %";}
-function calc8(){let w=parseFloat(document.getElementById('c8_wv').value);let p=parseFloat(document.getElementById('c8_pv').value);let ans=p?w/p*100:0;document.getElementById('r8').innerText="FORMULA: Sw=(Water/Pore)x100\nGIVEN:\nWater="+w+"\nPore="+p+"\nSOLUTION:\n=("+w+"/"+p+")x100\n= "+(w/p).toFixed(4)+"x100\nANSWER: Sw="+ans.toFixed(2)+" %";}
-function calc9(){let a=parseFloat(document.getElementById('c9_a').value);let h=parseFloat(document.getElementById('c9_h').value);let ans=a*h;document.getElementById('r9').innerText="FORMULA: Bulk=Area x Height\nGIVEN:\nArea="+a+"\nHeight="+h+"\nSOLUTION:\n="+a+"x"+h+"\n="+a*h+"\nANSWER: Bulk="+ans.toFixed(2);}
-function calc10(){let p=parseFloat(document.getElementById('c10_pv').value);let s=parseFloat(document.getElementById('c10_sw').value);let ans=p*(1-s);document.getElementById('r10').innerText="FORMULA: HCPV=PVx(1-Sw)\nGIVEN:\nPV="+p+"\nSw="+s+"\nSOLUTION:\n="+p+"x(1-"+s+")\n="+p+"x"+(1-s).toFixed(2)+"\nANSWER: HCPV="+ans.toFixed(2);}
-function calc11(){let s=parseFloat(document.getElementById('c11').value);let ans=141.5/s-131.5;document.getElementById('r11').innerText="FORMULA: API=141.5/SG-131.5\nGIVEN:\nSG="+s+"\nSOLUTION:\n=141.5/"+s+"-131.5\n= "+(141.5/s).toFixed(2)+"-131.5\nANSWER: API="+ans.toFixed(2)+".";}
-function calc12(){let g=parseFloat(document.getElementById('c12_g').value);let o=parseFloat(document.getElementById('c12_o').value);let ans=o?g/o:0;document.getElementById('r12').innerText="FORMULA: GOR=GasVol/OilVol\nGIVEN:\nGas="+g+" scf\nOil="+o+" stb\nSOLUTION:\n="+g+"/"+o+"\n= "+(g/o).toFixed(2)+"\nANSWER: GOR="+ans.toFixed(2)+" scf/stb";}
 </script>
 </body>
-</html>
+                                                                                            </html>
