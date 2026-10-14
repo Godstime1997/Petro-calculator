@@ -1,203 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PETRO-CALCULATOR.NG - 12-in-1</title>
-  <script src="https://js.paystack.co/v1/inline.js"></script>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box }
-    body { background:#0f172a; color:#e2e8f0; font-family:system-ui; padding-bottom:120px }
-    .header { background:#1e293b; border:2px solid #334155; padding:16px; text-align:center; position:sticky; top:0; z-index:10 }
-    .header h1 { color:#f59e0b; font-size:18px }
-    .sub { color:#94a3b8; font-size:11px; margin-top:4px }
-    .badge { background:#f59e0b; color:#000; padding:4px 10px; border-radius:20px; font-weight:700; font-size:11px; display:inline-block; margin:6px }
-    .master-btn { background:#334155; color:#f59e0b; border:1px solid #f59e0b; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:6px }
-    .container { max-width:480px; margin:0 auto; padding:10px }
-    .card { background:#1e293b; border-radius:12px; padding:12px; margin-bottom:10px; border:1px solid #334155 }
-    .card h3 { color:#f59e0b; font-size:13px; margin-bottom:8px }
-    label { font-size:10px; color:#94a3b8; display:block; margin-bottom:2px; margin-top:6px }
-    input, select { width:100%; padding:9px; border-radius:7px; border:1px solid #334155; background:#0f172a; color:#fff; font-size:13px }
-    .btn { width:100%; background:#f59e0b; color:#000; border:none; padding:11px; border-radius:7px; font-weight:800; font-size:13px; cursor:pointer; margin-top:8px }
-    .result { background:#0f172a; border:1px dashed #f59e0b; border-radius:7px; padding:8px; margin-top:8px; font-size:12px; min-height:28px }
-    .paywall { position:fixed; bottom:0; left:0; right:0; background:#1e293b; border-top:3px solid #f59e0b; padding:14px; z-index:100; display:none }
-    .paywall.show { display:block }
-    .admin { display:none; background:#000; border:2px solid #f59e0b; padding:12px; border-radius:10px; margin-bottom:12px }
-    .admin.show { display:block }
-    .reseller { background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; border-radius:12px; padding:14px; margin:15px 0; text-align:center }
-    .modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:200; padding:15px }
-    .modal.show { display:flex }
-    .modal-box { background:#1e293b; border:2px solid #f59e0b; border-radius:12px; padding:16px; width:100%; max-width:350px }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PETRO-CALCULATOR.NG - Pay Before Access</title>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f172a;color:#e2e8f0;font-family:system-ui;padding-bottom:50px}
+.header{background:#1e293b;border-bottom:3px solid #f59e0b;padding:20px;text-align:center;position:sticky;top:0;z-index:20}
+.header h1{color:#f59e0b;font-size:22px;letter-spacing:1px}
+.sub{color:#94a3b8;font-size:12px;margin-top:4px}
+.badge{background:#ef4444;color:#fff;padding:7px 16px;border-radius:20px;font-weight:900;font-size:12px;margin-top:10px;display:inline-block}
+.badge.unlocked{background:#22c55e;color:#000}
+.admin-dot{background:transparent;color:#1e293b;border:1px solid #1e293b;padding:3px 6px;border-radius:5px;font-size:8px;cursor:pointer;margin-top:8px}
+.container{max-width:500px;margin:0 auto;padding:12px}
+.hero-reseller{background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;border-radius:18px;padding:22px;text-align:center;border:3px solid #fbbf24;margin-bottom:14px;box-shadow:0 10px 30px rgba(245,158,11,0.3)}
+.hero-pay{background:#1e293b;border:2px solid #ef4444;border-radius:18px;padding:18px;text-align:center;margin-bottom:14px}
+.btn{width:100%;background:#f59e0b;color:#000;border:none;padding:15px;border-radius:12px;font-weight:900;font-size:15px;cursor:pointer;margin-top:12px;letter-spacing:0.5px}
+.btn-black{background:#000;color:#f59e0b;border:2px solid #000}
+.btn-red{background:#ef4444;color:#fff}
+.btn-green{background:#22c55e;color:#000}
+.card{background:#1e293b;border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid #334155}
+.card h3{color:#f59e0b;font-size:14px;margin-bottom:6px}
+label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}
+input{width:100%;padding:11px;border-radius:9px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:14px}
+.result{background:#0f172a;border:1px dashed #f59e0b;border-radius:9px;padding:10px;margin-top:10px;font-size:13px;min-height:32px}
+.calc-wrapper{display:block}
+.calc-wrapper.locked{display:none !important}
+.lock-screen{background:#0f172a;border:2px dashed #334155;border-radius:18px;padding:50px 20px;text-align:center;margin-top:10px}
+.admin{background:#000;border:2px solid #f59e0b;padding:16px;border-radius:14px;margin-bottom:14px;display:none}
+.admin.show{display:block}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:#1e293b;border:2px solid #f59e0b;border-radius:16px;padding:20px;width:100%;max-width:380px}
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <h1>⛽ PETRO-CALCULATOR.NG</h1>
-    <div class="sub">12-in-1 Petroleum Calculators - NEW</div>
-    <div class="badge" id="freeBadge">Free Left: 5/5</div>
-    <br>
-    <button class="master-btn" onclick="openMaster()">🔐 Admin Master Login</button>
-  </div>
+<div class="header">
+<h1>⛽ PETRO-CALCULATOR.NG</h1>
+<div class="sub">12-in-1 Professional Petroleum Engineering Tools</div>
+<div class="badge" id="statusBadge">🔒 LOCKED - PAY TO ACCESS</div>
+<br>
+<button class="admin-dot" onclick="openMaster()">ADMIN</button>
+</div>
 
-  <div class="container">
+<div class="container">
 
-    <!-- MASTER ADMIN PANEL (HIDDEN) -->
-    <div id="adminPanel" class="admin">
-      <h3 style="color:#f59e0b">🔐 MASTER ADMIN PANEL</h3>
-      <label>Free Limit</label>
-      <input id="adminFree" type="number" value="5">
-      <label>User Price ₦</label>
-      <input id="adminPrice" type="number" value="2500">
-      <label>Reseller Price ₦</label>
-      <input id="adminResellerPrice" type="number" value="25000">
-      <label>Your Paystack PUBLIC Key</label>
-      <input id="adminPaystackKey" type="text" placeholder="pk_live_xxxx">
-      <button class="btn" onclick="saveAdmin()">Save Master Settings</button>
-      <button class="btn" style="background:#334155;color:#fff" onclick="closeMasterPanel()">Close Panel</button>
-    </div>
+<!-- ADMIN PANEL - ONLY YOU CAN SEE WITH PASSWORD -->
+<div id="adminPanel" class="admin">
+<h3 style="color:#f59e0b">🔐 MASTER ADMIN - ONLY YOU</h3>
+<p style="font-size:11px;color:#22c55e;margin:6px 0">✅ Your password unlocks calculators FREE for you!</p>
+<label>Free Trial Limit (0 = no free, must pay)</label><input id="adminFree" type="number" value="0">
+<label>User Price ₦ - to unlock calculators</label><input id="adminPrice" type="number" value="2500">
+<label>Reseller Price ₦ - to get website code</label><input id="adminResellerPrice" type="number" value="25000">
+<label>Your Paystack PUBLIC Key (pk_live_...)</label><input id="adminPaystackKey" type="text" value="pk_live_522e90bc4d7ec45abe67ed9b807d7512a0d8ce5b">
+<button class="btn btn-green" onclick="adminUnlockFree()">✅ UNLOCK ALL FOR ME - ADMIN FREE ACCESS</button>
+<button class="btn" onclick="saveAdmin()">💾 Save Settings</button>
+<button class="btn" style="background:#334155;color:#fff" onclick="closeAdmin()">Close Admin</button>
+<hr style="margin:14px 0;border-color:#334155">
+<p style="font-size:11px;color:#94a3b8">Change Master Password (only you know):</p>
+<input id="newMasterPw" type="text" placeholder="Enter new secret password">
+<button class="btn" style="background:#475569;color:#fff" onclick="changeMasterPw()">Change My Secret Password</button>
+<button class="btn" style="background:#7f1d1d;color:#fff" onclick="resetCustomerAccess()">Reset - Lock Again For Customers</button>
+</div>
 
-    <!-- 1. Porosity -->
-    <div class="card">
-      <h3>1. Porosity (%)</h3>
-      <label>Pore Volume</label><input id="v1" type="number" value="25">
-      <label>Bulk Volume</label><input id="v1b" type="number" value="100">
-      <button class="btn" onclick="calc(1)">Calculate</button>
-      <div class="result" id="r1">Result here</div>
-    </div>
+<!-- 1ST THING CUSTOMERS SEE: CODE SALE N25,000 -->
+<div class="hero-reseller">
+<h2>💼 WANT YOUR OWN WEBSITE CODE?</h2>
+<p style="font-size:14px;font-weight:800;margin:8px 0">Pay Once, Own Forever + Resell To Others!</p>
+<div style="font-size:36px;font-weight:900;margin:12px 0">₦<span id="resellerPriceDisplay">25,000</span></div>
+<p style="font-size:13px;line-height:1.4">Get full source code + Master Admin + Your Paystack key already setup<br>Start your own calculator business today!</p>
+<button class="btn btn-black" onclick="payForReseller()">🔐 PAY ₦25,000 & GET MY CODE INSTANTLY</button>
+<p style="font-size:10px;margin-top:10px;opacity:0.9">🔒 Secure Paystack Payment • Instant Download After Payment</p>
+</div>
 
-    <!-- 2. Hydrostatic -->
-    <div class="card">
-      <h3>2. Hydrostatic Pressure (psi)</h3>
-      <label>Mud Weight (ppg)</label><input id="mw2" type="number" value="12">
-      <label>Depth (ft)</label><input id="d2" type="number" value="5000">
-      <button class="btn" onclick="calc(2)">Calculate</button>
-      <div class="result" id="r2"></div>
-    </div>
+<!-- 2ND THING: UNLOCK CALCULATORS N2,500 -->
+<div class="hero-pay">
+<h3 style="color:#ef4444;font-size:16px">🔒 PETROLEUM CALCULATORS LOCKED</h3>
+<p style="font-size:13px;color:#cbd5e1;margin:10px 0">You must pay before you can access the 12 calculators</p>
+<div style="background:#0f172a;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin:12px 0">
+<span style="font-size:14px">12 Calculators Access (30 days)</span>
+<b style="color:#f59e0b;font-size:22px">₦<span id="priceDisplay">2,500</span></b>
+</div>
+<button class="btn btn-red" onclick="payForCalculators()">💳 PAY ₦2,500 TO UNLOCK CALCULATORS</button>
+<p style="font-size:11px;color:#64748b;margin-top:8px">Paystack Secure • Calculators remain hidden until payment verified</p>
+</div>
 
-    <!-- 3. Bo -->
-    <div class="card">
-      <h3>3. Formation Volume Factor Bo</h3>
-      <label>Reservoir Volume</label><input id="rv3" type="number" value="1.2">
-      <label>Surface Volume</label><input id="sv3" type="number" value="1">
-      <button class="btn" onclick="calc(3)">Calculate</button>
-      <div class="result" id="r3"></div>
-    </div>
+<!-- LOCK SCREEN - CUSTOMERS SEE THIS -->
+<div id="lockScreen" class="lock-screen">
+<div style="font-size:50px">🔒</div>
+<h3 style="color:#ef4444;margin:14px 0;font-size:18px">CALCULATORS ARE HIDDEN</h3>
+<p style="font-size:14px;color:#94a3b8;line-height:1.5">Pay N2,500 to unlock calculators for use<br>OR Pay N25,000 to get your own website code</p>
+<p style="font-size:12px;color:#f59e0b;margin-top:14px;font-weight:800">⛔ NO FREE ACCESS - PAYMENT REQUIRED</p>
+<p style="font-size:10px;color:#334155;margin-top:20px">Admin? Tap ADMIN at top</p>
+</div>
 
-    <!-- 4. Permeability -->
-    <div class="card">
-      <h3>4. Permeability (Darcy)</h3>
-      <label>q (cc/s)</label><input id="q4" type="number" value="0.5">
-      <label>mu (cp)</label><input id="mu4" type="number" value="1">
-      <label>L (cm)</label><input id="l4" type="number" value="5">
-      <label>A (cm²)</label><input id="a4" type="number" value="10">
-      <label>dP (atm)</label><input id="dp4" type="number" value="2">
-      <button class="btn" onclick="calc(4)">Calculate</button>
-      <div class="result" id="r4"></div>
-    </div>
+<!-- CALCULATORS - ONLY VISIBLE AFTER PAY OR ADMIN PASSWORD -->
+<div id="calcWrapper" class="calc-wrapper locked">
 
-    <!-- 5. STOIIP -->
-    <div class="card">
-      <h3>5. STOIIP (STB)</h3>
-      <label>Area (acres)</label><input id="area5" type="number" value="100">
-      <label>h (ft)</label><input id="h5" type="number" value="20">
-      <label>Porosity</label><input id="phi5" type="number" value="0.2">
-      <label>Sw</label><input id="sw5" type="number" value="0.3">
-      <label>Bo</label><input id="bo5" type="number" value="1.2">
-      <button class="btn" onclick="calc(5)">Calculate</button>
-      <div class="result" id="r5"></div>
-    </div>
+<div class="card"><h3>1. Porosity (%) = Pore Vol / Bulk Vol * 100</h3><label>Pore Volume</label><input id="v1" type="number" value="25"><label>Bulk Volume</label><input id="v1b" type="number" value="100"><button class="btn" onclick="calc(1)">Calculate Porosity</button><div class="result" id="r1"></div></div>
 
-    <!-- 6. FVF -->
-    <div class="card">
-      <h3>6. Oil Formation Volume Factor</h3>
-      <label>Vol at Reservoir</label><input id="vr6" type="number" value="1.3">
-      <label>Vol at Surface</label><input id="vs6" type="number" value="1">
-      <button class="btn" onclick="calc(6)">Calculate</button>
-      <div class="result" id="r6"></div>
-    </div>
+<div class="card"><h3>2. Hydrostatic Pressure (psi) = 0.052 * MW * Depth</h3><label>Mud Weight (ppg)</label><input id="mw2" type="number" value="12"><label>Depth (ft)</label><input id="d2" type="number" value="5000"><button class="btn" onclick="calc(2)">Calculate Pressure</button><div class="result" id="r2"></div></div>
 
-    <!-- RESELLER - PAY BEFORE CODE -->
-    <div class="reseller">
-      <h3>💼 WANT YOUR OWN CODE?</h3>
-      <p>Pay once, get full source code + resell rights!</p>
-      <p><b>Price: ₦<span id="resellerPriceDisplay">25,000</span></b></p>
-      <button class="btn" style="background:#000;color:#f59e0b" onclick="payForReseller()">🔐 Pay & Get My Code Now</button>
-      <p style="font-size:10px;margin-top:6px">Secure Paystack - Instant Download</p>
-    </div>
-  </div>
+<div class="card"><h3>3. Formation Volume Factor Bo</h3><label>Reservoir Volume</label><input id="rv3" type="number" value="1.2"><label>Surface Volume</label><input id="sv3" type="number" value="1"><button class="btn" onclick="calc(3)">Calculate Bo</button><div class="result" id="r3"></div></div>
 
-  <!-- PAYWALL -->
-  <div class="paywall" id="paywall">
-    <h3 style="color:#f59e0b">⛔ Free Limit Reached!</h3>
-    <p>Pay ₦<span id="priceDisplay">2,500</span> for 30 days unlimited</p>
-    <button class="btn" onclick="payWithPaystack()">💳 Pay Now</button>
-    <button class="btn" style="background:#334155;color:#fff" onclick="closePaywall()">Later</button>
-  </div>
+<div class="card"><h3>4. Permeability (Darcy) = q*u*L / A*dP</h3><label>Flow Rate q</label><input id="q4" type="number" value="0.5"><label>Viscosity mu</label><input id="mu4" type="number" value="1"><label>Length L</label><input id="l4" type="number" value="5"><label>Area A</label><input id="a4" type="number" value="10"><label>Delta P</label><input id="dp4" type="number" value="2"><button class="btn" onclick="calc(4)">Calculate Permeability</button><div class="result" id="r4"></div></div>
 
-  <!-- MASTER MODAL -->
-  <div class="modal" id="masterModal">
-    <div class="modal-box">
-      <h3 style="color:#f59e0b">🔐 MASTER PASSWORD</h3>
-      <label>Password</label><input id="masterInput" type="password" placeholder="Enter master">
-      <button class="btn" onclick="checkMaster()">Unlock</button>
-      <button class="btn" style="background:#334155;color:#fff" onclick="closeMasterModal()">Cancel</button>
-      <p style="font-size:10px;color:#64748b;margin-top:8px">Default: Godstime@1997</p>
-    </div>
-  </div>
+<div class="card"><h3>5. STOIIP (STB) = 7758*A*h*phi*(1-Sw)/Bo</h3><label>Area (acres)</label><input id="area5" type="number" value="100"><label>Thickness h (ft)</label><input id="h5" type="number" value="20"><label>Porosity (fraction)</label><input id="phi5" type="number" value="0.2"><label>Water Saturation Sw</label><input id="sw5" type="number" value="0.3"><label>Bo</label><input id="bo5" type="number" value="1.2"><button class="btn" onclick="calc(5)">Calculate STOIIP</button><div class="result" id="r5"></div></div>
 
-  <!-- RESELLER SUCCESS -->
-  <div class="modal" id="resellerModal">
-    <div class="modal-box">
-      <h3 style="color:#22c55e">✅ Payment Success!</h3>
-      <p>Ref: <span id="txRef"></span></p>
-      <button class="btn" onclick="downloadCode()">📥 Download Source Code</button>
-      <button class="btn" style="background:#334155;color:#fff" onclick="closeResellerModal()">Close</button>
-    </div>
-  </div>
+<div class="card"><h3>6. Oil Formation Volume Factor</h3><label>Volume at Reservoir</label><input id="vr6" type="number" value="1.3"><label>Volume at Surface</label><input id="vs6" type="number" value="1"><button class="btn" onclick="calc(6)">Calculate FVF</button><div class="result" id="r6"></div></div>
+
+</div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal" id="masterModal"><div class="modal-box"><h3 style="color:#f59e0b">🔐 ENTER YOUR SECRET PASSWORD</h3><p style="font-size:11px;color:#94a3b8;margin:8px 0">Only you know this password</p><input id="masterInput" type="password" placeholder="Enter your secret password"><button class="btn" onclick="checkMaster()">Unlock Admin Panel</button><button class="btn" style="background:#334155;color:#fff" onclick="closeMaster()">Cancel</button><p style="font-size:10px;color:#475569;margin-top:10px">Default: Godstime@1997 - Change it after first login!</p></div></div>
+
+<!-- RESELLER SUCCESS MODAL -->
+<div class="modal" id="resellerModal"><div class="modal-box"><h3 style="color:#22c55e">✅ PAYMENT SUCCESS!</h3><p style="font-size:12px;margin:10px 0">Transaction Ref:</p><b style="font-size:12px;color:#f59e0b" id="txRef"></b><p style="font-size:11px;margin:12px 0;color:#94a3b8">Now download your source code:</p><button class="btn btn-green" onclick="downloadCode()">📥 DOWNLOAD MY WEBSITE CODE</button><p style="font-size:10px;margin-top:12px;line-height:1.4">Steps:<br>1. Create new GitHub repo<br>2. Upload this file as index.html<br>3. Enable GitHub Pages<br>4. Set YOUR Paystack key in Admin panel<br>5. Start selling!</p><button class="btn" style="background:#334155;color:#fff" onclick="closeReseller()">Close</button></div></div>
 
 <script>
-  let MASTER_PW = localStorage.getItem('petro_master_pw') || 'Godstime@1997';
-  let FREE_LIMIT = 5;
-  let USER_PRICE = 2500;
-  let RESELLER_PRICE = 25000;
-  let PAYSTACK_KEY = 'pk_test_1234567890';
-  let freeUsed = 0;
-  let paid = false;
+// MASTER SETTINGS - STORED IN LOCALSTORAGE
+let MASTER_PW = localStorage.getItem('petro_master_pw') || 'Godstime@1997';
+let FREE_LIMIT = parseInt(localStorage.getItem('petro_free_limit')||'0');
+let USER_PRICE = parseInt(localStorage.getItem('petro_user_price')||'2500');
+let RESELLER_PRICE = parseInt(localStorage.getItem('petro_reseller_price')||'25000');
+let PAYSTACK_KEY = localStorage.getItem('petro_paystack_key') || 'pk_live_522e90bc4d7ec45abe67ed9b807d7512a0d8ce5b';
+let paid = localStorage.getItem('petro_paid')==='true';
+let isAdminUnlocked = localStorage.getItem('petro_admin_unlocked')==='true';
 
-  function updateBadge(){
-    document.getElementById('freeBadge').textContent = paid ? 'Unlimited' : 'Free Left: '+(FREE_LIMIT-freeUsed)+'/'+FREE_LIMIT;
+function updateUI(){
+  let badge = document.getElementById('statusBadge');
+  let wrapper = document.getElementById('calcWrapper');
+  let lockScreen = document.getElementById('lockScreen');
+  let unlocked = paid || isAdminUnlocked;
+  
+  if(unlocked){
+    badge.textContent = isAdminUnlocked ? '✅ ADMIN UNLOCKED - FREE ACCESS' : '✅ UNLOCKED - PAID ACCESS';
+    badge.className = 'badge unlocked';
+    wrapper.classList.remove('locked');
+    lockScreen.style.display = 'none';
+  } else {
+    badge.textContent = '🔒 LOCKED - PAY TO ACCESS';
+    badge.className = 'badge';
+    wrapper.classList.add('locked');
+    lockScreen.style.display = 'block';
   }
-  function openMaster(){ document.getElementById('masterModal').classList.add('show'); }
-  function closeMasterModal(){ document.getElementById('masterModal').classList.remove('show'); }
-  function checkMaster(){
-    if(document.getElementById('masterInput').value === MASTER_PW){
-      document.getElementById('masterModal').classList.remove('show');
-      document.getElementById('adminPanel').classList.add('show');
-    } else { alert('Wrong Password! Default: Godstime@1997'); }
+  
+  document.getElementById('priceDisplay').textContent = USER_PRICE.toLocaleString();
+  document.getElementById('resellerPriceDisplay').textContent = RESELLER_PRICE.toLocaleString();
+}
+updateUI();
+
+function openMaster(){document.getElementById('masterModal').classList.add('show');}
+function closeMaster(){document.getElementById('masterModal').classList.remove('show');}
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
+
+function checkMaster(){
+  let input = document.getElementById('masterInput').value;
+  if(input === MASTER_PW){
+    document.getElementById('masterModal').classList.remove('show');
+    document.getElementById('adminPanel').classList.add('show');
+    document.getElementById('adminFree').value = FREE_LIMIT;
+    document.getElementById('adminPrice').value = USER_PRICE;
+    document.getElementById('adminResellerPrice').value = RESELLER_PRICE;
+    document.getElementById('adminPaystackKey').value = PAYSTACK_KEY;
+    document.getElementById('masterInput').value = '';
+    // Auto-unlock for admin when password correct
+    isAdminUnlocked = true;
+    localStorage.setItem('petro_admin_unlocked','true');
+    updateUI();
+    alert('✅ Correct! Admin panel opened + Calculators UNLOCKED FREE for you!\n\nYou do NOT need to pay. Customers still must pay!');
+    window.scrollTo(0,0);
+  } else {
+    alert('❌ Wrong password! Default is Godstime@1997');
   }
-  function closeMasterPanel(){ document.getElementById('adminPanel').classList.remove('show'); }
-  function saveAdmin(){ alert('Saved!'); closeMasterPanel(); }
-  function checkPaywall(){ if(freeUsed>=FREE_LIMIT){document.getElementById('paywall').classList.add('show');return true;} return false; }
-  function closePaywall(){ document.getElementById('paywall').classList.remove('show'); }
-  function calc(n){
-    if(checkPaywall()) return;
-    let res='';
-    if(n==1){ let pv=25, bv=100; res='Porosity = '+(pv/bv*100).toFixed(2)+'%'; }
-    if(n==2){ res='Hydrostatic = '+(0.052*12*5000).toFixed(2)+' psi'; }
-    if(n==3){ res='Bo = 1.200'; }
-    if(n==4){ res='k = 0.0125 Darcy'; }
-    if(n==5){ res='STOIIP = 108,612 STB'; }
-    if(n==6){ res='FVF = 1.300'; }
+}
+
+function adminUnlockFree(){
+  isAdminUnlocked = true;
+  localStorage.setItem('petro_admin_unlocked','true');
+  updateUI();
+  alert('✅ Calculators UNLOCKED FREE for you (Admin)!\n\nCustomers still locked - they must pay!');
+  closeAdmin();
+}
+
+function saveAdmin(){
+  FREE_LIMIT = parseInt(document.getElementById('adminFree').value)||0;
+  USER_PRICE = parseInt(document.getElementById('adminPrice').value)||2500;
+  RESELLER_PRICE = parseInt(document.getElementById('adminResellerPrice').value)||25000;
+  PAYSTACK_KEY = document.getElementById('adminPaystackKey').value.trim() || PAYSTACK_KEY;
+  localStorage.setItem('petro_free_limit',FREE_LIMIT);
+  localStorage.setItem('petro_user_price',USER_PRICE);
+  localStorage.setItem('petro_reseller_price',RESELLER_PRICE);
+  if(PAYSTACK_KEY) localStorage.setItem('petro_paystack_key',PAYSTACK_KEY);
+  updateUI();
+  alert('✅ Settings Saved!\nMaster Password: '+MASTER_PW);
+}
+
+function changeMasterPw(){
+  let newPw = document.getElementById('newMasterPw').value.trim();
+  if(newPw.length < 4){alert('Password must be at least 4 characters');return;}
+  MASTER_PW = newPw;
+  localStorage.setItem('petro_master_pw',MASTER_PW);
+  document.getElementById('newMasterPw').value='';
+  alert('✅ Your NEW secret password is:\n\n'+MASTER_PW+'\n\nOnly you know it! Remember it!');
+}
+
+function resetCustomerAccess(){
+  if(confirm('Lock calculators again for customers? (You will stay unlocked as admin)')){
+    localStorage.setItem('petro_paid','false');
+    paid = false;
+    updateUI();
+    alert('✅ Customers locked again - must pay!\nYou remain unlocked as admin.');
+  }
+}
+
+function calc(n){
+  let unlocked = paid || isAdminUnlocked;
+  if(!unlocked){alert('🔒 PAY FIRST! Pay N2,500 to unlock calculators.');return;}
+  let res='';
+  try{
+    if(n==1){let pv=parseFloat(document.getElementById('v1').value)||0;let bv=parseFloat(document.getElementById('v1b').value)||1;res='Porosity = '+(pv/bv*100).toFixed(2)+'%';}
+    if(n==2){let mw=parseFloat(document.getElementById('mw2').value)||0;let d=parseFloat(document.getElementById('d2').value)||0;res='Hydrostatic = '+(0.052*mw*d).toFixed(2)+' psi';}
+    if(n==3){let rv=parseFloat(document.getElementById('rv3').value)||0;let sv=parseFloat(document.getElementById('sv3').value)||1;res='Bo = '+(rv/sv).toFixed(3);}
+    if(n==4){let q=parseFloat(document.getElementById('q4').value)||0;let mu=parseFloat(document.getElementById('mu4').value)||0;let l=parseFloat(document.getElementById('l4').value)||0;let a=parseFloat(document.getElementById('a4').value)||1;let dp=parseFloat(document.getElementById('dp4').value)||1;res='k = '+((q*mu*l)/(a*dp)).toFixed(4)+' Darcy';}
+    if(n==5){let area=parseFloat(document.getElementById('area5').value)||0;let h=parseFloat(document.getElementById('h5').value)||0;let phi=parseFloat(document.getElementById('phi5').value)||0;let sw=parseFloat(document.getElementById('sw5').value)||0;let bo=parseFloat(document.getElementById('bo5').value)||1;let stooip=7758*area*h*phi*(1-sw)/bo;res='STOIIP = '+stooip.toLocaleString()+' STB';}
+    if(n==6){let vr=parseFloat(document.getElementById('vr6').value)||0;let vs=parseFloat(document.getElementById('vs6').value)||1;res='FVF = '+(vr/vs).toFixed(3);}
     document.getElementById('r'+n).innerHTML='<b style="color:#22c55e">'+res+'</b>';
-    freeUsed++; updateBadge();
-  }
-  function payWithPaystack(){ alert('Paystack popup will show here - Add your pk_live key!'); }
-  function payForReseller(){ alert('Paystack for N25k code sale - Add your pk_live key!'); }
-  function closeResellerModal(){ document.getElementById('resellerModal').classList.remove('show'); }
-  function downloadCode(){ alert('Download source code after pay!'); }
-</script>
+  }catch(e){document.getElementById('r'+n).textContent='Error';}
+}
 
+function payForCalculators(){
+  if(!PAYSTACK_KEY.startsWith('pk_')){alert('Set Paystack key in Admin panel first!');return;}
+  let handler = PaystackPop.setup({
+    key: PAYSTACK_KEY,
+    email: 'customer@petrocalc.ng',
+    amount: USER_PRICE*100,
+    currency: 'NGN',
+    ref: 'PETRO_USE_'+Math.floor(Math.random()*1e9),
+    callback: function(r){
+      paid = true;
+      localStorage.setItem('petro_paid','true');
+      updateUI();
+      alert('✅ Payment Success! Ref: '+r.reference+'\n\nCalculators now UNLOCKED for you!');
+    },
+    onClose: function(){alert('Payment cancelled');}
+  });
+  handler.openIframe();
+}
+
+function payForReseller(){
+  if(!PAYSTACK_KEY.startsWith('pk_')){alert('Set Paystack key in Admin panel first!');return;}
+  let handler = PaystackPop.setup({
+    key: PAYSTACK_KEY,
+    email: 'reseller@petrocalc.ng',
+    amount: RESELLER_PRICE*100,
+    currency: 'NGN',
+    ref: 'PETRO_CODE_'+Math.floor(Math.random()*1e9),
+    callback: function(r){
+      document.getElementById('txRef').textContent = r.reference;
+      document.getElementById('resellerModal').classList.add('show');
+    },
+    onClose: function(){alert('Payment cancelled');}
+  });
+  handler.openIframe();
+}
+
+function closeReseller(){document.getElementById('resellerModal').classList.remove('show');}
+function downloadCode(){
+  let blob = new Blob([document.documentElement.outerHTML],{type:'text/html'});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');a.href=url;a.download='petro-calculator-source.html';a.click();
+}
+</script>
 </body>
- </html>
+  </html>
