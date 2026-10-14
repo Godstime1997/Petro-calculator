@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PETRO-CALCULATOR.NG - Pay Before Access</title>
 <script src="https://js.paystack.co/v1/inline.js"></script>
+<meta name="description" content="12-in-1 Petroleum Engineering Calculator with step-by-step solutions - Porosity, OOIP, Darcy, API Gravity, GOR, Bo, Bg. Pay N2,500 to unlock in Nigeria.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0f172a;color:#e2e8f0;font-family:system-ui,sans-serif;padding-bottom:50px}
@@ -12,7 +13,7 @@ body{background:#0f172a;color:#e2e8f0;font-family:system-ui,sans-serif;padding-b
 .badge{background:#f44444;color:#fff;padding:7px 16px;border-radius:20px;font-weight:900;font-size:12px;margin-top:10px;display:inline-block}
 .badge.unlocked{background:#22c55e;color:#000}
 .admin-dot{background:#f59e0b;color:#000;border:2px solid #f59e0b;padding:10px 20px;border-radius:8px;font-weight:900;cursor:pointer;margin-top:10px;display:inline-block}
-.container{max-width:500px;margin:0 auto;padding:15px}
+.container{max-width:520px;margin:0 auto;padding:15px}
 .page{display:none}.page.active{display:block}
 .hero-reseller{background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;border-radius:18px;padding:22px;text-align:center;margin-bottom:15px;border:3px solid #000}
 .hero-paywall{background:#1e293b;border:2px solid #f44444;border-radius:18px;padding:22px;text-align:center;margin-bottom:15px}
@@ -20,7 +21,7 @@ body{background:#0f172a;color:#e2e8f0;font-family:system-ui,sans-serif;padding-b
 .btn-black{background:#000;color:#f59e0b;border:2px solid #f59e0b}.btn-red{background:#f44444;color:#fff}.btn-green{background:#22c55e;color:#000}
 .card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:14px;margin-bottom:14px}.card h3{color:#f59e0b;font-size:14px;margin-bottom:8px}
 label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:100%;padding:11px;border-radius:9px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:14px}
-.result{background:#0f172a;border:1px dashed #f59e0b;border-radius:12px;padding:12px;margin-top:10px;font-size:12px;min-height:35px;white-space:pre-wrap}
+.result{background:#0f172a;border:1px dashed #f59e0b;border-radius:12px;padding:12px;margin-top:10px;font-size:12px;min-height:35px;white-space:pre-wrap;line-height:1.5}
 .lock-screen{background:#1e293b;border:2px dashed #334155;border-radius:14px;padding:20px;text-align:center;margin-bottom:15px}.admin-box{background:#000;border:2px solid #f59e0b;padding:16px;border-radius:14px;margin-bottom:14px;display:none}
 .code-big{background:#000;border:3px solid #22c55e;color:#22c55e;font-size:28px;font-weight:900;padding:15px;border-radius:12px;text-align:center;margin:12px 0;letter-spacing:2px}
 </style>
@@ -28,7 +29,7 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <body>
 <div class="header">
 <h2>⛽ PETRO-CALCULATOR.NG</h2>
-<div style="color:#94a3b8;font-size:12px">12-in-1 Professional Petroleum Tools</div>
+<div style="color:#94a3b8;font-size:12px">12-in-1 With Full Working Steps</div>
 <div class="badge" id="statusBadge">🔒 LOCKED - PAY TO ACCESS</div><br>
 <button class="admin-dot" onclick="openMaster()">ADMIN</button>
 </div>
@@ -81,9 +82,9 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <button class="btn" style="background:#334155;color:#fff" onclick="sendCodeEmail()">📧 SEND CODE TO EMAIL AGAIN</button>
 </div>
 
-<div class="card"><h3>1. Porosity (%) = Pore/Bulk*100</h3><label>Pore Volume</label><input id="c1_pv" type="number" value="25"><label>Bulk Volume</label><input id="c1_bv" type="number" value="100"><button class="btn" onclick="calc1()">Calculate Porosity</button><div class="result" id="r1"></div></div>
+<div class="card"><h3>1. Porosity (%) = Pore/Bulk*100</h3><label>Pore Volume</label><input id="c1_pv" type="number" value="25"><label>Bulk Volume</label><input id="c1_bv" type="number" value="100"><button class="btn" onclick="calc1()">Calculate Porosity</button><div class="result" id="r1">Click calculate to see full working...</div></div>
 <div class="card"><h3>2. Hydrostatic Pressure (psi) = 0.052*MW*Depth</h3><label>Mud Weight ppg</label><input id="c2_mw" type="number" value="12"><label>Depth ft</label><input id="c2_d" type="number" value="5000"><button class="btn" onclick="calc2()">Calculate Pressure</button><div class="result" id="r2"></div></div>
-<div class="card"><h3>3. Oil Formation Volume Factor Bo</h3><label>Oil Density (g/cc)</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
+<div class="card"><h3>3. Oil Formation Volume Factor Bo</h3><label>Specific Gravity SG</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
 <div class="card"><h3>4. Gas Formation Volume Factor Bg = 0.02827*Z*T/P</h3><label>Z-Factor</label><input id="c4_z" type="number" value="0.9"><label>Temp R</label><input id="c4_t" type="number" value="600"><label>Pressure psi</label><input id="c4_p" type="number" value="3000"><button class="btn" onclick="calc4()">Calculate Bg</button><div class="result" id="r4"></div></div>
 <div class="card"><h3>5. Darcy Flow Rate Q = 0.001127*K*A*ΔP/(μ*L)</h3><label>Permeability md</label><input id="c5_k" type="number" value="100"><label>Area ft2</label><input id="c5_a" type="number" value="1000"><label>ΔP psi</label><input id="c5_dp" type="number" value="100"><label>Viscosity cp</label><input id="c5_mu" type="number" value="1"><label>Length ft</label><input id="c5_l" type="number" value="100"><button class="btn" onclick="calc5()">Calculate Flow Rate</button><div class="result" id="r5"></div></div>
 <div class="card"><h3>6. Original Oil In Place OOIP = 7758*A*H*Φ*(1-Sw)/Bo</h3><label>Area acres</label><input id="c6_a" type="number" value="100"><label>Thickness ft</label><input id="c6_h" type="number" value="50"><label>Porosity fraction</label><input id="c6_phi" type="number" value="0.2"><label>Sw fraction</label><input id="c6_sw" type="number" value="0.3"><label>Bo</label><input id="c6_bo" type="number" value="1.2"><button class="btn" onclick="calc6()">Calculate OOIP</button><div class="result" id="r6"></div></div>
@@ -119,62 +120,18 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function generateCode(ref){return 'PC-'+ref.slice(-6).toUpperCase();}
 function copyCode(){let c=document.getElementById('myCodeDisplay').innerText;navigator.clipboard.writeText(c);alert('Copied: '+c);}
 function sendCodeEmail(){let code=document.getElementById('myCodeDisplay').innerText;let email=localStorage.getItem('lastEmail')||prompt('Enter email:');if(!email)return;localStorage.setItem('lastEmail',email);let s=encodeURIComponent('Your PETRO-CALCULATOR Code: '+code);let b=encodeURIComponent('Your code: '+code+'\nUse at: https://godstime1997.github.io/Petro-calculator/\nEnter in HAVE ACCESS CODE?\n\nSave this email!');window.location.href='mailto:'+email+'?subject='+s+'&body='+b;}
-
-function payToUnlock(){
-let customerEmail=prompt('Enter your REAL email to receive code:','');
-if(!customerEmail||!customerEmail.includes('@')){alert('Valid email needed');return;}
-localStorage.setItem('lastEmail',customerEmail);
-let key=localStorage.getItem('paystackKey')||paystackKey;
-let h=PaystackPop.setup({key:key,email:customerEmail,amount:price*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){
-let code=generateCode(res.reference);
-let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');codes.push(code);
-localStorage.setItem('validCodes',JSON.stringify(codes));
-sessionStorage.setItem('sessionUnlock',code);localStorage.setItem('lastCode',code);
-document.getElementById('myCodeDisplay').innerText=code;
-alert('✅ SUCCESS!\nCode: '+code+'\nEmail: '+customerEmail+'\n\nCopy code! Email app will open to send to your inbox.');
-let s=encodeURIComponent('Your PETRO-CALCULATOR Code: '+code);
-let b=encodeURIComponent('Thanks for N'+price+' payment!\n\nCode: '+code+'\nRef: '+res.reference+'\n\nHow to use:\n1. Go to https://godstime1997.github.io/Petro-calculator/\n2. Enter code in HAVE ACCESS CODE?\n3. Unlock\n\nNeeded every time you exit.\nSave this!');
-setTimeout(()=>{window.location.href='mailto:'+customerEmail+'?subject='+s+'&body='+b;},600);
-showPage('pageCalc');updateBadge();
-},onClose:function(){alert('Cancelled');}});
-h.openIframe();
-}
-function payForReseller(){
-let email=prompt('Enter email for reseller file:','');
-if(!email||!email.includes('@')){alert('Valid email');return;}
-let key=localStorage.getItem('paystackKey')||paystackKey;
-let h=PaystackPop.setup({key:key,email:email,amount:resellerPrice*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){
-alert('Reseller success! Ref:'+res.reference+' Downloading file...');
-let blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='petro-calculator-code.html';a.click();
-},onClose:function(){}});
-h.openIframe();
-}
-function unlockWithCode(){
-let raw=document.getElementById('codeInput').value.trim();
-if(!raw){document.getElementById('codeMsg').innerText='Enter code';return;}
-let input=raw.toUpperCase();
-let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');
-let isAdmin=(raw===MASTER_PW)||(input===MASTER_PW.toUpperCase())||(input==='GODSTIME1997')||(input==='GODSTIME@1997')||(input==='ADMIN-FREE');
-if(isAdmin){sessionStorage.setItem('sessionUnlock','admin');localStorage.setItem('lastCode','ADMIN-FREE');document.getElementById('myCodeDisplay').innerText='ADMIN-FREE';showPage('pageCalc');updateBadge();return;}
-if(codes.includes(input)){sessionStorage.setItem('sessionUnlock',input);localStorage.setItem('lastCode',input);document.getElementById('myCodeDisplay').innerText=input;showPage('pageCalc');updateBadge();return;}
-document.getElementById('codeMsg').innerText='❌ Invalid code. Check email for PC- code';
-}
+function payToUnlock(){let customerEmail=prompt('Enter your REAL email to receive code:','');if(!customerEmail||!customerEmail.includes('@')){alert('Valid email needed');return;}localStorage.setItem('lastEmail',customerEmail);let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:customerEmail,amount:price*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){let code=generateCode(res.reference);let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');codes.push(code);localStorage.setItem('validCodes',JSON.stringify(codes));sessionStorage.setItem('sessionUnlock',code);localStorage.setItem('lastCode',code);document.getElementById('myCodeDisplay').innerText=code;alert('✅ SUCCESS! Code: '+code+' Copy it! Email will open.');let s=encodeURIComponent('Your PETRO-CALCULATOR Code: '+code);let b=encodeURIComponent('Thanks for N'+price+' payment!\n\nCode: '+code+'\nRef: '+res.reference+'\n\nUse at: https://godstime1997.github.io/Petro-calculator/\nSave this!');setTimeout(()=>{window.location.href='mailto:'+customerEmail+'?subject='+s+'&body='+b;},600);showPage('pageCalc');updateBadge();},onClose:function(){alert('Cancelled');}});h.openIframe();}
+function payForReseller(){let email=prompt('Enter email for reseller file:','');if(!email||!email.includes('@')){alert('Valid email');return;}let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:email,amount:resellerPrice*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){alert('Reseller success! Ref:'+res.reference+' Downloading file...');let blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='petro-calculator-code.html';a.click();},onClose:function(){}});h.openIframe();}
+function unlockWithCode(){let raw=document.getElementById('codeInput').value.trim();if(!raw){document.getElementById('codeMsg').innerText='Enter code';return;}let input=raw.toUpperCase();let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');let isAdmin=(raw===MASTER_PW)||(input===MASTER_PW.toUpperCase())||(input==='GODSTIME1997')||(input==='GODSTIME@1997')||(input==='ADMIN-FREE');if(isAdmin){sessionStorage.setItem('sessionUnlock','admin');localStorage.setItem('lastCode','ADMIN-FREE');document.getElementById('myCodeDisplay').innerText='ADMIN-FREE';showPage('pageCalc');updateBadge();return;}if(codes.includes(input)){sessionStorage.setItem('sessionUnlock',input);localStorage.setItem('lastCode',input);document.getElementById('myCodeDisplay').innerText=input;showPage('pageCalc');updateBadge();return;}document.getElementById('codeMsg').innerText='❌ Invalid code. Check email for PC- code';}
 function lockAndExit(){sessionStorage.removeItem('sessionUnlock');showPage('pageLock');updateBadge();let last=localStorage.getItem('lastCode');if(last&&last.includes('ADMIN')){alert('Admin session ended');}else if(last){alert('Locked! Code: '+last+' - Saved in email!');}else{alert('Locked!');}}
 updateBadge();
 let sess=sessionStorage.getItem('sessionUnlock');
 if(sess){showPage('pageCalc');let last=localStorage.getItem('lastCode');document.getElementById('myCodeDisplay').innerText=(last&&last.includes('ADMIN'))?'ADMIN-FREE':(last||sess);}else{showPage('pageLock');}
-function calc1(){let pv=parseFloat(document.getElementById('c1_pv').value),bv=parseFloat(document.getElementById('c1_bv').value);document.getElementById('r1').innerText=bv?`Porosity = ${(pv/bv*100).toFixed(2)} %`:'Invalid';}
-function calc2(){let mw=parseFloat(document.getElementById('c2_mw').value),d=parseFloat(document.getElementById('c2_d').value);document.getElementById('r2').innerText=`Hydrostatic = ${(0.052*mw*d).toFixed(2)} psi`;}
-function calc3(){let v=parseFloat(document.getElementById('c3').value);document.getElementById('r3').innerText=`Bo approx = ${(0.972+0.000147*v).toFixed(4)}`;}
-function calc4(){let z=parseFloat(document.getElementById('c4_z').value),t=parseFloat(document.getElementById('c4_t').value),p=parseFloat(document.getElementById('c4_p').value);document.getElementById('r4').innerText=`Bg = ${(0.02827*z*t/p).toFixed(5)} cuft/scf`;}
-function calc5(){let k=parseFloat(document.getElementById('c5_k').value),a=parseFloat(document.getElementById('c5_a').value),dp=parseFloat(document.getElementById('c5_dp').value),mu=parseFloat(document.getElementById('c5_mu').value),l=parseFloat(document.getElementById('c5_l').value);document.getElementById('r5').innerText=`Q = ${((0.001127*k*a*dp)/(mu*l)).toFixed(2)} bbl/day`;}
-function calc6(){let a=parseFloat(document.getElementById('c6_a').value),h=parseFloat(document.getElementById('c6_h').value),phi=parseFloat(document.getElementById('c6_phi').value),sw=parseFloat(document.getElementById('c6_sw').value),bo=parseFloat(document.getElementById('c6_bo').value);document.getElementById('r6').innerText=`OOIP = ${((7758*a*h*phi*(1-sw))/bo).toFixed(0)} STB`;}
-function calc7(){let o=parseFloat(document.getElementById('c7_ooip').value),r=parseFloat(document.getElementById('c7_rec').value);document.getElementById('r7').innerText=`RF = ${(r/o*100).toFixed(2)} %`;}
-function calc8(){let w=parseFloat(document.getElementById('c8_wv').value),p=parseFloat(document.getElementById('c8_pv').value);document.getElementById('r8').innerText=`Sw = ${(w/p*100).toFixed(2)} %`;}
-function calc9(){let a=parseFloat(document.getElementById('c9_a').value),h=parseFloat(document.getElementById('c9_h').value);document.getElementById('r9').innerText=`Bulk Vol = ${(a*h).toFixed(2)}`;}
-function calc10(){let pv=parseFloat(document.getElementById('c10_pv').value),sw=parseFloat(document.getElementById('c10_sw').value);document.getElementById('r10').innerText=`HCPV = ${(pv*(1-sw)).toFixed(2)}`;}
-function calc11(){let sg=parseFloat(document.getElementById('c11').value);document.getElementById('r11').innerText=`API = ${(141.5/sg-131.5).toFixed(2)}`;}
-function calc12(){let g=parseFloat(document.getElementById('c12_g').value),o=parseFloat(document.getElementById('c12_o').value);document.getElementById('r12').innerText=`GOR = ${(g/o).toFixed(2)} scf/stb`;}
-</script>
-</body>
-  </html>
+
+function calc1(){let pv=parseFloat(document.getElementById('c1_pv').value),bv=parseFloat(document.getElementById('c1_bv').value);let ans=bv?pv/bv*100:0;document.getElementById('r1').innerText=`FORMULA: Porosity (%) = (Pore Volume / Bulk Volume) × 100\n\nGIVEN:\nPore Vol = ${pv}\nBulk Vol = ${bv}\n\nSOLUTION:\n= (${pv} / ${bv}) × 100\n= ${(pv/bv).toFixed(4)} × 100\n\nANSWER: Porosity = ${ans.toFixed(2)} %`;}
+function calc2(){let mw=parseFloat(document.getElementById('c2_mw').value),d=parseFloat(document.getElementById('c2_d').value);let ans=0.052*mw*d;document.getElementById('r2').innerText=`FORMULA: P = 0.052 × MW × Depth\n\nGIVEN:\nMW = ${mw} ppg\nDepth = ${d} ft\n\nSOLUTION:\n= 0.052 × ${mw} × ${d}\n= ${ans.toFixed(2)}\n\nANSWER: Hydrostatic Pressure = ${ans.toFixed(2)} psi`;}
+function calc3(){let sg=parseFloat(document.getElementById('c3').value);let api=141.5/sg-131.5;let bo=0.972+0.000147*api;document.getElementById('r3').innerText=`FORMULA:\nAPI = 141.5/SG - 131.5\nBo = 0.972 + 0.000147 × API\n\nGIVEN:\nSG = ${sg}\nAPI = ${api.toFixed(2)}\n\nSOLUTION:\nBo = 0.972 + 0.000147 × ${api.toFixed(2)}\n= 0.972 + ${(0.000147*api).toFixed(5)}\n\nANSWER: Bo = ${bo.toFixed(4)} RB/STB`;}
+function calc4(){let z=parseFloat(document.getElementById('c4_z').value),t=parseFloat(document.getElementById('c4_t').value),p=parseFloat(document.getElementById('c4_p').value);let ans=0.02827*z*t/p;document.getElementById('r4').innerText=`FORMULA: Bg = 0.02827 × Z × T / P\n\nGIVEN:\nZ = ${z}, T = ${t} R, P = ${p} psi\n\nSOLUTION:\n= 0.02827 × ${z} × ${t} / ${p}\n= ${(0.02827*z*t).toFixed(2)} / ${p}\n\nANSWER: Bg = ${ans.toFixed(5)} cuft/scf`;}
+function calc5(){let k=parseFloat(document.getElementById('c5_k').value),a=parseFloat(document.getElementById('c5_a').value),dp=parseFloat(document.getElementById('c5_dp').value),mu=parseFloat(document.getElementById('c5_mu').value),l=parseFloat(document.getElementById('c5_l').value);let ans=(0.001127*k*a*dp)/(mu*l);document.getElementById('r5').innerText=`FORMULA: Q = 0.001127 × K × A × ΔP / (μ × L)\n\nGIVEN:\nK=${k} md, A=${a} ft², ΔP=${dp} psi, μ=${mu} cp, L=${l} ft\n\nSOLUTION:\n= 0.001127 × ${k} × ${a} × ${dp} / (${mu} × ${l})\n= ${(0.001127*k*a*dp).toFixed(2)} / ${(mu*l)}\n\nANSWER: Q = ${ans.toFixed(2)} bbl/day`;}
+function calc6(){let a=parseFloat(document.getElementById('c6_a').value),h=parseFloat(document.getElementById('c6_h').value),phi=parseFloat(document.getElementById('c6_phi').value),sw=parseFloat(document.getElementById('c6_sw').value),bo=parseFloat(document.getElementById('c6_bo').value);let ans=(7758*a*h*phi*(1-sw))/bo;document.getElementById('r6').innerText=`FORMULA: OOIP = 7758 × A × H × Φ × (1-Sw) / Bo\n\nGIVEN:\nA=${a} ac, H=${h} ft, Φ=${phi}, Sw=${sw}, Bo=${bo}\n\nSOLUTION:\n= 7758 × ${a} × ${h} × ${phi} × ${(1-sw)} / ${bo}\n= ${(7758*a*h*phi*(1-sw)).toFixed(0)} / ${bo}\n\nANSWER: OOIP = ${ans.toFixed(0)} STB`;}
+function calc7(){let ooip=parseFloat(document.getElementById('c7_ooip').value),rec=parseFloat(document.getElementById('c7_rec').value);let ans=rec/ooip*100;document.getElementById('r7').innerText=`FORMULA: RF = (Recoverable / OOIP) × 1
