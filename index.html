@@ -196,14 +196,14 @@ let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');
 if(input==='ADMIN-FREE' && localStorage.getItem('lastCode')==='ADMIN-FREE'){sessionStorage.setItem('sessionUnlock','admin');showPage('pageCalc');updateBadge();return;}
 if(codes.includes(input)||input===MASTER_PW||input==='GODSTIME1997'){
 sessionStorage.setItem('sessionUnlock',input);
-document.getElementById('myCodeDisplay').innerText=input;
+if(input===MASTER_PW || input==='GODSTIME1997' || input==='ADMIN-FREE'){document.getElementById('myCodeDisplay').innerText='ADMIN-FREE';}else{document.getElementById('myCodeDisplay').innerText=input;}
 showPage('pageCalc');updateBadge();document.getElementById('codeMsg').innerText='';
 }else{document.getElementById('codeMsg').innerText='❌ Invalid code. Pay first to get code.';}
 }
 function lockAndExit(){
 sessionStorage.removeItem('sessionUnlock');
 showPage('pageLock');
-updateBadge();
+let last=localStorage.getItem('lastCode'); if(last && last.includes('ADMIN')){alert('Locked! Admin session ended.');}else{alert('Locked! Your code was: '+(last||'saved')+' - Save it to unlock again!');}
 alert('Locked! Next time you need your code again to unlock. Your code was: '+(localStorage.getItem('lastCode')||'saved'));
 }
 window.addEventListener('beforeunload',function(){/* keep session, but user wanted lock on exit - we use lock button, sessionStorage auto clears when tab closed */});
@@ -211,7 +211,7 @@ updateBadge();
 let sess=sessionStorage.getItem('sessionUnlock');
 if(sess){showPage('pageCalc');document.getElementById('myCodeDisplay').innerText=localStorage.getItem('lastCode')||sess;}
 else{showPage('pageLock');}
-
+let last=localStorage.getItem('lastCode'); if(last && last.includes('ADMIN')){alert('Locked! Admin session ended.');}else{alert('Locked! Your code was: '+(last||'saved')+' - Save it to unlock again!');}
 function calc1(){let pv=parseFloat(document.getElementById('c1_pv').value),bv=parseFloat(document.getElementById('c1_bv').value);document.getElementById('r1').innerText=bv?`Porosity = ${(pv/bv*100).toFixed(2)} %`:'Invalid';}
 function calc2(){let mw=parseFloat(document.getElementById('c2_mw').value),d=parseFloat(document.getElementById('c2_d').value);document.getElementById('r2').innerText=`Hydrostatic = ${(0.052*mw*d).toFixed(2)} psi`;}
 function calc3(){let v=parseFloat(document.getElementById('c3').value);document.getElementById('r3').innerText=`Bo approx = ${(0.972+0.000147*v).toFixed(4)}`;}
