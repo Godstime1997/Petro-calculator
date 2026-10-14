@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PETRO-CALCULATOR.NG - Pay Before Access</title>
+<title>PETRO-CALCULATOR.NG</title>
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -11,7 +11,6 @@ body{background:#0f172a;color:#e2e8f0;font-family:system-ui,sans-serif;padding-b
 .header{background:#1e293b;border-bottom:3px solid #f59e0b;padding:20px;text-align:center;position:sticky;top:0;z-index:100}
 .badge{background:#f44444;color:#fff;padding:7px 16px;border-radius:20px;font-weight:900;font-size:12px;margin-top:10px;display:inline-block}
 .badge.unlocked{background:#22c55e;color:#000}
-.admin-dot{background:#f59e0b;color:#000;border:2px solid #f59e0b;padding:10px 20px;border-radius:8px;font-weight:900;cursor:pointer;margin-top:10px;display:inline-block}
 .container{max-width:520px;margin:0 auto;padding:15px}
 .page{display:none}.page.active{display:block}
 .hero-reseller{background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;border-radius:18px;padding:22px;text-align:center;margin-bottom:15px;border:3px solid #000}
@@ -30,8 +29,6 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <h2>⛽ PETRO-CALCULATOR.NG</h2>
 <div style="color:#94a3b8;font-size:12px">12-in-1 With Full Working Steps</div>
 <div class="badge" id="statusBadge">🔒 LOCKED - PAY TO ACCESS</div>
-<button class="admin-dot" onclick="openMaster()" style="display:none;">ADMIN</button>
-<div id="myCodeDisplay" style="display:none;"></div>
 </div>
 <div class="container">
 <div id="masterPanel" class="admin-box">
@@ -39,7 +36,7 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <label>User Price ₦</label><input id="adminPrice" type="number" value="2500">
 <label>Reseller Price ₦</label><input id="adminResellerPrice" type="number" value="25000">
 <label>Paystack PUBLIC Key</label><input id="adminPaystackKey" type="text" value="pk_live_522e90bc4d7ec45abe67ed9b807d7512a0d8ce5b">
-<button class="btn btn-green" onclick="adminUnlockFree()">✅ UNLOCK FOR ME - ADMIN FREE</button>
+<button class="btn btn-green" onclick="adminUnlockFree()">✅ UNLOCK FOR ME</button>
 <button class="btn" style="background:#334155;color:#fff" onclick="saveAdmin()">Save Settings</button>
 <button class="btn btn-black" onclick="closeMaster()">Close</button>
 <hr style="margin:14px 0;border-color:#334155">
@@ -57,13 +54,11 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 </div>
 <div class="hero-paywall">
 <h3 style="color:#f87171">🔒 PETROLEUM CALCULATORS LOCKED</h3>
-<p style="font-size:12px;margin:6px 0">Pay before access - Locks again on exit</p>
 <div style="display:flex;justify-content:space-between;margin:12px 0;font-size:13px"><span>12 Calculators Session</span><b style="color:#f59e0b">₦<span id="priceDisplay">2,500</span></b></div>
 <button class="btn btn-red" onclick="payToUnlock()">💳 PAY ₦2,500 TO UNLOCK</button>
 </div>
 <div class="lock-screen">
 <h3>🔑 HAVE ACCESS CODE?</h3>
-<p style="font-size:11px;margin:6px 0">Enter code from your email</p>
 <input id="codeInput" placeholder="e.g. PC-8F3A-9K2M">
 <button class="btn" onclick="unlockWithCode()">UNLOCK WITH CODE</button>
 <p id="codeMsg" style="font-size:11px;margin-top:8px;color:#f87171"></p>
@@ -72,15 +67,15 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 <div id="pageCalc" class="page">
 <div class="card"><h3>1. Porosity (%)</h3><label>Pore Volume</label><input id="c1_pv" type="number" value="25"><label>Bulk Volume</label><input id="c1_bv" type="number" value="100"><button class="btn" onclick="calc1()">Calculate Porosity</button><div class="result" id="r1"></div></div>
 <div class="card"><h3>2. Hydrostatic Pressure</h3><label>Mud Weight ppg</label><input id="c2_mw" type="number" value="12"><label>Depth ft</label><input id="c2_d" type="number" value="5000"><button class="btn" onclick="calc2()">Calculate Pressure</button><div class="result" id="r2"></div></div>
-<div class="card"><h3>3. Oil Formation Volume Factor Bo</h3><label>Specific Gravity SG</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
-<div class="card"><h3>4. Gas Formation Volume Factor Bg</h3><label>Z-Factor</label><input id="c4_z" type="number" value="0.9"><label>Temp R</label><input id="c4_t" type="number" value="600"><label>Pressure psi</label><input id="c4_p" type="number" value="3000"><button class="btn" onclick="calc4()">Calculate Bg</button><div class="result" id="r4"></div></div>
-<div class="card"><h3>5. Darcy Flow Rate</h3><label>Permeability md</label><input id="c5_k" type="number" value="100"><label>Area ft2</label><input id="c5_a" type="number" value="1000"><label>ΔP psi</label><input id="c5_dp" type="number" value="100"><label>Viscosity cp</label><input id="c5_mu" type="number" value="1"><label>Length ft</label><input id="c5_l" type="number" value="100"><button class="btn" onclick="calc5()">Calculate Flow Rate</button><div class="result" id="r5"></div></div>
+<div class="card"><h3>3. Bo</h3><label>SG</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
+<div class="card"><h3>4. Bg</h3><label>Z</label><input id="c4_z" type="number" value="0.9"><label>Temp R</label><input id="c4_t" type="number" value="600"><label>Pressure psi</label><input id="c4_p" type="number" value="3000"><button class="btn" onclick="calc4()">Calculate Bg</button><div class="result" id="r4"></div></div>
+<div class="card"><h3>5. Darcy Flow</h3><label>K md</label><input id="c5_k" type="number" value="100"><label>Area ft2</label><input id="c5_a" type="number" value="1000"><label>ΔP psi</label><input id="c5_dp" type="number" value="100"><label>Viscosity cp</label><input id="c5_mu" type="number" value="1"><label>Length ft</label><input id="c5_l" type="number" value="100"><button class="btn" onclick="calc5()">Calculate Flow</button><div class="result" id="r5"></div></div>
 <div class="card"><h3>6. OOIP</h3><label>Area acres</label><input id="c6_a" type="number" value="100"><label>Thickness ft</label><input id="c6_h" type="number" value="50"><label>Porosity fraction</label><input id="c6_phi" type="number" value="0.2"><label>Sw fraction</label><input id="c6_sw" type="number" value="0.3"><label>Bo</label><input id="c6_bo" type="number" value="1.2"><button class="btn" onclick="calc6()">Calculate OOIP</button><div class="result" id="r6"></div></div>
-<div class="card"><h3>7. Recovery Factor</h3><label>OOIP STB</label><input id="c7_ooip" type="number" value="1000000"><label>Recoverable STB</label><input id="c7_rec" type="number" value="350000"><button class="btn" onclick="calc7()">Calculate RF</button><div class="result" id="r7"></div></div>
-<div class="card"><h3>8. Water Saturation</h3><label>Water Volume</label><input id="c8_wv" type="number" value="30"><label>Pore Volume</label><input id="c8_pv" type="number" value="100"><button class="btn" onclick="calc8()">Calculate Sw</button><div class="result" id="r8"></div></div>
-<div class="card"><h3>9. Bulk Volume</h3><label>Area</label><input id="c9_a" type="number" value="100"><label>Height</label><input id="c9_h" type="number" value="20"><button class="btn" onclick="calc9()">Calculate Bulk Vol</button><div class="result" id="r9"></div></div>
+<div class="card"><h3>7. RF</h3><label>OOIP</label><input id="c7_ooip" type="number" value="1000000"><label>Recoverable</label><input id="c7_rec" type="number" value="350000"><button class="btn" onclick="calc7()">Calculate RF</button><div class="result" id="r7"></div></div>
+<div class="card"><h3>8. Sw</h3><label>Water Volume</label><input id="c8_wv" type="number" value="30"><label>Pore Volume</label><input id="c8_pv" type="number" value="100"><button class="btn" onclick="calc8()">Calculate Sw</button><div class="result" id="r8"></div></div>
+<div class="card"><h3>9. Bulk Volume</h3><label>Area</label><input id="c9_a" type="number" value="100"><label>Height</label><input id="c9_h" type="number" value="20"><button class="btn" onclick="calc9()">Calculate Bulk</button><div class="result" id="r9"></div></div>
 <div class="card"><h3>10. HCPV</h3><label>Pore Vol</label><input id="c10_pv" type="number" value="100"><label>Sw fraction</label><input id="c10_sw" type="number" value="0.3"><button class="btn" onclick="calc10()">Calculate HCPV</button><div class="result" id="r10"></div></div>
-<div class="card"><h3>11. API Gravity</h3><label>Specific Gravity</label><input id="c11" type="number" value="0.85" step="0.01"><button class="btn" onclick="calc11()">Calculate API</button><div class="result" id="r11"></div></div>
+<div class="card"><h3>11. API Gravity</h3><label>SG</label><input id="c11" type="number" value="0.85" step="0.01"><button class="btn" onclick="calc11()">Calculate API</button><div class="result" id="r11"></div></div>
 <div class="card"><h3>12. GOR</h3><label>Gas Vol scf</label><input id="c12_g" type="number" value="100000"><label>Oil Vol stb</label><input id="c12_o" type="number" value="100"><button class="btn" onclick="calc12()">Calculate GOR</button><div class="result" id="r12"></div></div>
 <button class="btn btn-red" onclick="lockAndExit()">🔒 LOCK & GO BACK</button>
 </div>
@@ -99,7 +94,7 @@ el('adminPrice').value = price;
 el('adminResellerPrice').value = resellerPrice;
 el('priceDisplay').innerText = price.toLocaleString();
 el('resellerPriceDisplay').innerText = resellerPrice.toLocaleString();
-function openMaster(){let pw=prompt('Master password:');if(!pw)return;let up=pw.toUpperCase();if(up===_M1||up===_M2||up===MASTER_PW.toUpperCase()){el('masterPanel').style.display='block';}else alert('Wrong master');}
+function openMaster(){let pw=prompt('Master password:');if(!pw)return;let up=pw.toUpperCase();if(up===_M1||up===_M2||up===MASTER_PW.toUpperCase()){el('masterPanel').style.display='block';}else alert('Wrong');}
 function closeMaster(){el('masterPanel').style.display='none';}
 function adminUnlockFree(){sessionStorage.setItem('sessionUnlock','MASTER');localStorage.setItem('isPaid','true');showPage('pageCalc');}
 function saveAdmin(){paystackKey=el('adminPaystackKey').value.trim();price=parseInt(el('adminPrice').value)||2500;resellerPrice=parseInt(el('adminResellerPrice').value)||25000;localStorage.setItem('paystackKey',paystackKey);localStorage.setItem('userPrice',price);localStorage.setItem('resellerPrice',resellerPrice);el('priceDisplay').innerText=price.toLocaleString();el('resellerPriceDisplay').innerText=resellerPrice.toLocaleString();alert('Saved!');}
@@ -108,22 +103,22 @@ function resetCustomerAccess(){sessionStorage.removeItem('sessionUnlock');localS
 function updateBadge(){let sess=sessionStorage.getItem('sessionUnlock');if(sess){el('statusBadge').innerText='✅ UNLOCKED';el('statusBadge').className='badge unlocked';}else{el('statusBadge').innerText='🔒 LOCKED - PAY TO ACCESS';el('statusBadge').className='badge';}}
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));el(id).classList.add('active');window.scrollTo(0,0);updateBadge();}
 function generateCode(ref){return 'PC-'+ref.slice(-6).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase();}
-function payToUnlock(){let customerEmail=prompt('Enter your REAL email to receive code:','');if(!customerEmail||!customerEmail.includes('@')){alert('Valid email needed');return;}localStorage.setItem('lastEmail',customerEmail);let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:customerEmail,amount:price*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){let code=generateCode(res.reference);el('generatedCode').innerText=code;el('codeSection').style.display='block';let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');codes.push(code);localStorage.setItem('validCodes',JSON.stringify(codes));sessionStorage.setItem('sessionUnlock',code);localStorage.setItem('lastCode',code);alert('✅ SUCCESS! Code: '+code);showPage('pageCalc');},onClose:function(){alert('Payment cancelled');}});h.openIframe();}
+function payToUnlock(){let customerEmail=prompt('Enter your REAL email to receive code:','');if(!customerEmail||!customerEmail.includes('@')){alert('Valid email needed');return;}let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:customerEmail,amount:price*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){let code=generateCode(res.reference);el('generatedCode').innerText=code;el('codeSection').style.display='block';let codes=JSON.parse(localStorage.getItem('validCodes')||'[]');codes.push(code);localStorage.setItem('validCodes',JSON.stringify(codes));sessionStorage.setItem('sessionUnlock',code);localStorage.setItem('lastCode',code);alert('✅ SUCCESS! Code: '+code);showPage('pageCalc');},onClose:function(){alert('Payment cancelled');}});h.openIframe();}
 function payForReseller(){let email=prompt('Enter email for reseller file:','');if(!email||!email.includes('@')){alert('Valid email');return;}let key=localStorage.getItem('paystackKey')||paystackKey;let h=PaystackPop.setup({key:key,email:email,amount:resellerPrice*100,currency:'NGN',ref:''+Math.floor(Math.random()*1000000000+1),callback:function(res){alert('Reseller success! Ref:'+res.reference);let blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='petro-calculator-code.html';a.click();},onClose:function(){}});h.openIframe();}
 function unlockWithCode(){let raw=el('codeInput').value.trim().toUpperCase();if(!raw){alert('Enter code');return;}let m=(localStorage.getItem('masterPw')||_M1).toUpperCase();if(raw===_M1||raw===_M2||raw===m||raw.startsWith('PC-')){sessionStorage.setItem('sessionUnlock',raw.startsWith('PC-')?raw:'MASTER');localStorage.setItem('isPaid','true');localStorage.setItem('lastCode',raw);el('codeMsg').innerText='';showPage('pageCalc');}else{el('codeMsg').innerText='Invalid code';}}
 function lockAndExit(){sessionStorage.removeItem('sessionUnlock');showPage('pageLock');}
-function calc1(){let pv=parseFloat(el('c1_pv').value);let bv=parseFloat(el('c1_bv').value);let ans=bv?pv/bv*100:0;el('r1').innerText="Porosity = "+ans.toFixed(2)+" %\n=("+pv+"/"+bv+")x100";}
-function calc2(){let mw=parseFloat(el('c2_mw').value);let d=parseFloat(el('c2_d').value);let ans=0.052*mw*d;el('r2').innerText="Pressure = "+ans.toFixed(2)+" psi\n=0.052 x "+mw+" x "+d;}
-function calc3(){let sg=parseFloat(el('c3').value);let api=141.5/sg-131.5;let bo=0.972+0.000147*api;el('r3').innerText="Bo="+bo.toFixed(4);}
-function calc4(){let z=parseFloat(el('c4_z').value);let t=parseFloat(el('c4_t').value);let p=parseFloat(el('c4_p').value);let ans=0.02827*z*t/p;el('r4').innerText="Bg="+ans.toFixed(5);}
-function calc5(){let k=parseFloat(el('c5_k').value);let a=parseFloat(el('c5_a').value);let dp=parseFloat(el('c5_dp').value);let mu=parseFloat(el('c5_mu').value);let l=parseFloat(el('c5_l').value);let ans=0.001127*k*a*dp/(mu*l);el('r5').innerText="Q="+ans.toFixed(2)+" bbl/day";}
-function calc6(){let a=parseFloat(el('c6_a').value);let h=parseFloat(el('c6_h').value);let phi=parseFloat(el('c6_phi').value);let sw=parseFloat(el('c6_sw').value);let bo=parseFloat(el('c6_bo').value);let ans=7758*a*h*phi*(1-sw)/bo;el('r6').innerText="OOIP="+ans.toFixed(0)+" STB";}
-function calc7(){let oo=parseFloat(el('c7_ooip').value);let re=parseFloat(el('c7_rec').value);let ans=oo?re/oo*100:0;el('r7').innerText="RF="+ans.toFixed(2)+" %";}
-function calc8(){let w=parseFloat(el('c8_wv').value);let p=parseFloat(el('c8_pv').value);let ans=p?w/p*100:0;el('r8').innerText="Sw="+ans.toFixed(2)+" %";}
-function calc9(){let a=parseFloat(el('c9_a').value);let h=parseFloat(el('c9_h').value);let ans=a*h;el('r9').innerText="Bulk="+ans.toFixed(2);}
-function calc10(){let p=parseFloat(el('c10_pv').value);let s=parseFloat(el('c10_sw').value);let ans=p*(1-s);el('r10').innerText="HCPV="+ans.toFixed(2);}
-function calc11(){let sg=parseFloat(el('c11').value);let ans=141.5/sg-131.5;el('r11').innerText="API="+ans.toFixed(2);}
-function calc12(){let g=parseFloat(el('c12_g').value);let o=parseFloat(el('c12_o').value);let ans=o?g/o:0;el('r12').innerText="GOR="+ans.toFixed(2);}
+function calc1(){let pv=parseFloat(el('c1_pv').value);let bv=parseFloat(el('c1_bv').value);let ans=bv?pv/bv*100:0;el('r1').innerText="FORMULA: Porosity = (Pore/Bulk)x100\nGIVEN:\nPore="+pv+"\nBulk="+bv+"\nSOLUTION:\n= ("+pv+"/"+bv+")x100\n= "+(pv/bv).toFixed(4)+"x100\nANSWER: Porosity = "+ans.toFixed(2)+" %";}
+function calc2(){let mw=parseFloat(el('c2_mw').value);let d=parseFloat(el('c2_d').value);let ans=0.052*mw*d;el('r2').innerText="FORMULA: P = 0.052 x MW x Depth\nGIVEN:\nMW="+mw+" ppg\nDepth="+d+" ft\nSOLUTION:\n= 0.052 x "+mw+" x "+d+"\n= "+(0.052*mw).toFixed(4)+" x "+d+"\nANSWER: Pressure = "+ans.toFixed(2)+" psi";}
+function calc3(){let sg=parseFloat(el('c3').value);let api=141.5/sg-131.5;let bo=0.972+0.000147*api;el('r3').innerText="FORMULA: API=141.5/SG-131.5\nBo=0.972+0.000147xAPI\nGIVEN:\nSG="+sg+"\nSOLUTION:\nAPI=141.5/"+sg+"-131.5="+api.toFixed(2)+"\nBo=0.972+0.000147x"+api.toFixed(2)+"\nANSWER: Bo="+bo.toFixed(4)+" RB/STB";}
+function calc4(){let z=parseFloat(el('c4_z').value);let t=parseFloat(el('c4_t').value);let p=parseFloat(el('c4_p').value);let ans=0.02827*z*t/p;el('r4').innerText="FORMULA: Bg=0.02827xZxT/P\nGIVEN:\nZ="+z+"\nT="+t+" R\nP="+p+" psi\nSOLUTION:\n=0.02827x"+z+"x"+t+"/"+p+"\n= "+(0.02827*z*t).toFixed(2)+"/"+p+"\nANSWER: Bg="+ans.toFixed(5)+" cuft/scf";}
+function calc5(){let k=parseFloat(el('c5_k').value);let a=parseFloat(el('c5_a').value);let dp=parseFloat(el('c5_dp').value);let mu=parseFloat(el('c5_mu').value);let l=parseFloat(el('c5_l').value);let ans=0.001127*k*a*dp/(mu*l);el('r5').innerText="FORMULA: Q=0.001127xKxAxdP/(muxL)\nGIVEN:\nK="+k+" md A="+a+"\ndP="+dp+" mu="+mu+" L="+l+"\nSOLUTION:\n=0.001127x"+k+"x"+a+"x"+dp+"/("+mu+"x"+l+")\nANSWER: Q="+ans.toFixed(2)+" bbl/day";}
+function calc6(){let a=parseFloat(el('c6_a').value);let h=parseFloat(el('c6_h').value);let phi=parseFloat(el('c6_phi').value);let sw=parseFloat(el('c6_sw').value);let bo=parseFloat(el('c6_bo').value);let ans=7758*a*h*phi*(1-sw)/bo;el('r6').innerText="FORMULA: OOIP=7758xAxHxPhix(1-Sw)/Bo\nGIVEN:\nA="+a+" H="+h+" Phi="+phi+" Sw="+sw+" Bo="+bo+"\nSOLUTION:\n=7758x"+a+"x"+h+"x"+phi+"x"+(1-sw).toFixed(2)+"/"+bo+"\nANSWER: OOIP="+ans.toFixed(0)+" STB";}
+function calc7(){let oo=parseFloat(el('c7_ooip').value);let re=parseFloat(el('c7_rec').value);let ans=oo?re/oo*100:0;el('r7').innerText="FORMULA: RF=(Recoverable/OOIP)x100\nGIVEN:\nRecoverable="+re+"\nOOIP="+oo+"\nSOLUTION:\n=("+re+"/"+oo+")x100\n= "+(re/oo).toFixed(4)+"x100\nANSWER: RF="+ans.toFixed(2)+" %";}
+function calc8(){let w=parseFloat(el('c8_wv').value);let p=parseFloat(el('c8_pv').value);let ans=p?w/p*100:0;el('r8').innerText="FORMULA: Sw=(Water/Pore)x100\nGIVEN:\nWater="+w+"\nPore="+p+"\nSOLUTION:\n=("+w+"/"+p+")x100\n= "+(w/p).toFixed(4)+"x100\nANSWER: Sw="+ans.toFixed(2)+" %";}
+function calc9(){let a=parseFloat(el('c9_a').value);let h=parseFloat(el('c9_h').value);let ans=a*h;el('r9').innerText="FORMULA: Bulk=Area x Height\nGIVEN:\nArea="+a+"\nHeight="+h+"\nSOLUTION:\n="+a+"x"+h+"\n="+a*h+"\nANSWER: Bulk="+ans.toFixed(2);}
+function calc10(){let p=parseFloat(el('c10_pv').value);let s=parseFloat(el('c10_sw').value);let ans=p*(1-s);el('r10').innerText="FORMULA: HCPV=PVx(1-Sw)\nGIVEN:\nPV="+p+" Sw="+s+"\nSOLUTION:\n="+p+"x(1-"+s+")\nANSWER: HCPV="+ans.toFixed(2);}
+function calc11(){let sg=parseFloat(el('c11').value);let ans=141.5/sg-131.5;el('r11').innerText="FORMULA: API=141.5/SG-131.5\nGIVEN:\nSG="+sg+"\nSOLUTION:\n=141.5/"+sg+"-131.5\nANSWER: API="+ans.toFixed(2);}
+function calc12(){let g=parseFloat(el('c12_g').value);let o=parseFloat(el('c12_o').value);let ans=o?g/o:0;el('r12').innerText="FORMULA: GOR=Gas/Oil\nGIVEN:\nGas="+g+"\nOil="+o+"\nSOLUTION:\n="+g+"/"+o+"\nANSWER: GOR="+ans.toFixed(2)+" scf/stb";}
 let sess = sessionStorage.getItem('sessionUnlock') || sessionStorage.getItem('sessionActive');
 if(sess){sessionStorage.setItem('sessionUnlock',sess);showPage('pageCalc');}else{showPage('pageLock');}
 updateBadge();
