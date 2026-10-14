@@ -86,7 +86,7 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 </div>
 </div>
 <script>
-let MASTER_PW=localStorage.getItem('masterPw')||'Godstime@1997';
+function unlockWithCode(){let raw=document.getElementById('codeInput').value.trim().toUpperCase();if(!raw)return alert('Enter code');let m=(localStorage.getItem('masterPw')||'GODSTIME1997').toUpperCase();if(raw==='GODSTIME1997'||raw==='GODSTIME@1997'||raw===m||raw.startsWith('PC-')){sessionStorage.setItem('sessionUnlock','1');localStorage.setItem('isPaid','true');showPage('pageCalc');location.reload();}else{document.getElementById('codeMsg').innerText='Invalid code';}}
 let paystackKey=localStorage.getItem('paystackKey')||'pk_live_522e90bc4d7ec45abe67ed9b807d7512a0d8ce5b';
 let price=parseInt(localStorage.getItem('userPrice')||'2500');
 let resellerPrice=parseInt(localStorage.getItem('resellerPrice')||'25000');
