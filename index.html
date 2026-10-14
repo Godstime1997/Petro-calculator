@@ -69,16 +69,7 @@ label{font-size:11px;color:#94a3b8;display:block;margin:8px 0 2px}input{width:10
 </div>
 </div>
 <div id="pageCalc" class="page">
-<div class="card" style="border-color:#22c55e;background:#052e16">
-<h3 style="color:#22c55e">✅ ACCESS GRANTED - SESSION ACTIVE</h3>
-<div class="code-big" id="myCodeDisplay">-</div>
-<p style="font-size:11px;text-align:center">Save this code! Needed after exit. Check your email.</p>
-<div style="display:flex;gap:8px;margin-top:10px">
-<button class="btn" style="flex:1;background:#22c55e;color:#000" onclick="copyCode()">📋 COPY CODE</button>
-<button class="btn btn-red" style="flex:1" onclick="lockAndExit()">🔒 LOCK & EXIT</button>
-</div>
-<button class="btn" style="background:#334155;color:#fff" onclick="sendCodeEmail()">📧 SEND CODE TO EMAIL AGAIN</button>
-</div>
+
 <div class="card"><h3>1. Porosity (%) = Pore/Bulk*100</h3><label>Pore Volume</label><input id="c1_pv" type="number" value="25"><label>Bulk Volume</label><input id="c1_bv" type="number" value="100"><button class="btn" onclick="calc1()">Calculate Porosity</button><div class="result" id="r1"></div></div>
 <div class="card"><h3>2. Hydrostatic Pressure (psi) = 0.052*MW*Depth</h3><label>Mud Weight ppg</label><input id="c2_mw" type="number" value="12"><label>Depth ft</label><input id="c2_d" type="number" value="5000"><button class="btn" onclick="calc2()">Calculate Pressure</button><div class="result" id="r2"></div></div>
 <div class="card"><h3>3. Oil Formation Volume Factor Bo</h3><label>Specific Gravity SG</label><input id="c3" type="number" value="0.85"><button class="btn" onclick="calc3()">Calculate Bo</button><div class="result" id="r3"></div></div>
